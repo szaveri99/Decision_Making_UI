@@ -6,7 +6,7 @@ function RadioCMPT({
   handleTick,
   tickState,
   handleInputChange,
-  modifiedTxt,
+  userText,
 }) {
   const handleRadioChange = (event) => {
     const value = event.target.value;
@@ -41,7 +41,7 @@ function RadioCMPT({
         <InputCMPT
           originalTxt={originalTxt}
           handleInputChange={handleInputChange}
-          modifiedTxt={modifiedTxt}
+          modifiedTxt={userText}
         />
       )}
     </div>

@@ -1,15 +1,45 @@
-import './index.css'
+import './index.css';
 import QuestionCMPT from './Components/LoadQuestion';
 import BtnCMPT from './Components/Button';
 import dummyData from './Dummy.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [isSubmit, setIsSubmit] = useState(false);
   const [questionState, setQuestionState] = useState(0);
   const currentQuestion = dummyData[questionState];
+  const [userResponses, setUserResponses] = useState(
+    dummyData.map((data) => ({ statement: data, range: 0, text: '' }))
+  );
+  const handleRangeChange = (index, newRangeValue) => {
+    setUserResponses((prevState) => {
+      const newResponses = [...prevState];
+      newResponses[index].range = newRangeValue;
+      return newResponses;
+    });
+  };
+
+  const handleTextChange = (index, newTextValue) => {
+    setUserResponses((prevState) => {
+      const newResponses = [...prevState];
+      newResponses[index].text = newTextValue;
+      return newResponses;
+    });
+  };
+
+  useEffect(() => {
+    console.log(userResponses);
+  }, [isSubmit]);
+
   return (
     <>
-      <QuestionCMPT data={currentQuestion} />
+      <QuestionCMPT
+        data={currentQuestion}
+        index={questionState}
+        handleRangeChange={handleRangeChange}
+        handleTextChange={handleTextChange}
+        userResponse={userResponses[questionState]}
+      />
       <div id='btn-component'>
         <BtnCMPT
           buttonID={'previous-btn'}
@@ -33,9 +63,7 @@ function App() {
           buttonID={'submit-btn'}
           buttonName={'submit'}
           shouldDisable={questionState !== dummyData.length - 1}
-          handleBtnClick={() => {
-            console.log('congratulations');
-          }}
+          handleBtnClick={() => setIsSubmit(true)}
         />
       </div>
       <div id='page-number'>
