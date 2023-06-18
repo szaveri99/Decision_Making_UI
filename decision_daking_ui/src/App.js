@@ -1,6 +1,6 @@
-import './Components/Button/index.css';
-import QuestionCMPT from './Components/LoadQuestion/index.js';
-import MyButton from './Components/Button/index.js';
+import './index.css'
+import QuestionCMPT from './Components/LoadQuestion';
+import BtnCMPT from './Components/Button';
 import dummyData from './Dummy.js';
 import { useState } from 'react';
 
@@ -11,23 +11,25 @@ function App() {
     <>
       <QuestionCMPT data={currentQuestion} />
       <div id='btn-component'>
-        <MyButton
+        <BtnCMPT
           buttonID={'previous-btn'}
           buttonName={'previous'}
           handleBtnClick={() =>
-            setQuestionState((previousState) => (previousState -= 1))
+            setQuestionState((previousState) => Math.max(0, previousState - 1))
           }
           shouldDisable={questionState === 0}
         />
-        <MyButton
+        <BtnCMPT
           buttonID={'next-btn'}
           buttonName={'next'}
           handleBtnClick={() =>
-            setQuestionState((previousState) => (previousState += 1))
+            setQuestionState((previousState) =>
+              Math.min(dummyData.length - 1, previousState + 1)
+            )
           }
           shouldDisable={questionState === dummyData.length - 1}
         />
-        <MyButton
+        <BtnCMPT
           buttonID={'submit-btn'}
           buttonName={'submit'}
           shouldDisable={questionState !== dummyData.length - 1}
