@@ -1,5 +1,5 @@
 import React from 'react';
 
-export default function index({ txt }) {
+export default function StmtCMPT({ txt }) {
   return <div>{txt}</div>;
 }

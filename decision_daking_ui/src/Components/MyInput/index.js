@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-function index() {
+function InputCMPT({ originalTxt }) {
+  const [submitState, setSubmitState] = useState(false);
+  const [modifiedTxt, setModifiedTxt] = useState('');
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSubmitState(true);
+  };
   return (
     <>
       <div>
-        <form>
-          <input type='text' />
+        <form onSubmit={handleSubmit}>
+          <input
+            type='text'
+            onChange={(event) => setModifiedTxt(event.target.value)}
+          />
           <input type='submit' value={'submit'} />
         </form>
       </div>
-      <div>
-        <p>This was original</p>
-        <p>This was modified</p>
-      </div>
+      {submitState && (
+        <div>
+          <p>original text: {originalTxt}</p>
+          <p>modified text: {modifiedTxt}</p>
+        </div>
+      )}
     </>
   );
 }
 
-export default index;
+export default InputCMPT;

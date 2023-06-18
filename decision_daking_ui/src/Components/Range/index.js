@@ -1,6 +1,6 @@
 import React from 'react';
 
-function index() {
+function RangeCMPT() {
   return (
     <div>
       <input type='range' step={1} min={0} max={7} />
@@ -8,4 +8,4 @@ function index() {
   );
 }
 
-export default index;
+export default RangeCMPT;

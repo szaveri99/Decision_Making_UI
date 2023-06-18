@@ -1,20 +1,20 @@
 import React from 'react';
-import Instructions from '../Instructions/index.js';
-import MyStmt from '../Stmt/index.js';
-import MyRange from '../Range/index.js';
-import MyRadio from '../Radio/index.js';
-import MyInput from '../MyInput/index.js';
+import InstructionsCMPT from '../Instructions/index.js';
+import StmtCMPT from '../Stmt/index.js';
+import RangeCMPT from '../Range/index.js';
+import RadioCMPT from '../Radio/index.js';
 
-function index() {
+function QuestionCMPT({data}) {
+  const currentInstructions = 'Please follow propper guide lines';
+
   return (
     <>
-      <Instructions insText={'oye this is me'} />
-      <MyStmt txt={'Hola'} />
-      <MyRange />
-      <MyRadio />
-      <MyInput />
+      <InstructionsCMPT insText={currentInstructions} />
+      <StmtCMPT txt={data} />
+      <RangeCMPT />
+      <RadioCMPT originalTxt={data} />
     </>
   );
 }
 
-export default index;
+export default QuestionCMPT;

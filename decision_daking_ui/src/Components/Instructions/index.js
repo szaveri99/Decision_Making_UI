@@ -1,7 +1,7 @@
 import React from 'react';
 
-function index({ insText }) {
+function InstructionsCMPT({ insText }) {
   return <div>{insText}</div>;
 }
 
-export default index;
+export default InstructionsCMPT;
