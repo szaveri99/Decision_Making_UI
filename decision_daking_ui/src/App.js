@@ -1,11 +1,13 @@
 import './index.css';
 import QuestionCMPT from './Components/LoadQuestion';
 import BtnCMPT from './Components/Button';
+import ModalCMPT from './Components/Modal';
 import dummyData from './Dummy.js';
 import { useEffect, useState } from 'react';
 
 function App() {
   const [isSubmit, setIsSubmit] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [questionState, setQuestionState] = useState(0);
   const currentQuestion = dummyData[questionState];
   const [userResponses, setUserResponses] = useState(
@@ -63,12 +65,20 @@ function App() {
           buttonID={'submit-btn'}
           buttonName={'submit'}
           shouldDisable={questionState !== dummyData.length - 1}
-          handleBtnClick={() => setIsSubmit(true)}
+          handleBtnClick={() => setShowModal(true)}
         />
       </div>
       <div id='page-number'>
         {questionState + 1}/{dummyData.length}
       </div>
+      {showModal && (
+        <ModalCMPT
+          showModal={showModal}
+          userResponses={userResponses}
+          setIsSubmit={setIsSubmit}
+          setShowModal={setShowModal}
+        />
+      )}
     </>
   );
 }
