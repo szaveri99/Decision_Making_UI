@@ -1,4 +1,4 @@
-// import './index.css';
+import './index.css';
 import React from 'react';
 import Modal from 'react-modal';
 
@@ -9,7 +9,6 @@ export default function ModalCMPT({
   setShowModal,
 }) {
   return (
-    <div>
       <Modal
         isOpen={showModal}
         contentLabel='Modal'
@@ -19,18 +18,19 @@ export default function ModalCMPT({
       >
         {userResponses.map((eachResponse) => {
           return (
-            <div>
-              <h1>Actual Text: {eachResponse.statement}</h1>
-              <h1>Modified Text: {eachResponse.text}</h1>
-              <h1>Rating: {eachResponse.range}</h1>
+            <div id="massages">
+              <h1 class="firstChildOfMassages"><b>Actual Text</b> : {eachResponse.statement}</h1>
+              <h1><b>Modified Text</b> : {eachResponse.text}</h1>
+              <h1><b>Rating</b> : {eachResponse.range}</h1>
             </div>
           );
         })}
+        <div class="btns">
         <button onClick={() => setIsSubmit(true) && console.log(userResponses)}>
           submit
         </button>
         <button onClick={() => setShowModal(false)}>Close</button>
+        </div>
       </Modal>
-    </div>
   );
 }
