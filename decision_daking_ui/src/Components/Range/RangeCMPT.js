@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './index.css';
 
-function RangeCMPT({ rangeValue, handleRangeChange }) {
+function RangeCMPT({ rangeValue, handleRangeChange, index }) {
   const rangeStmt = [
     'True',
     'Mostly True',
@@ -14,7 +14,7 @@ function RangeCMPT({ rangeValue, handleRangeChange }) {
 
   const handleChange = (event) => {
     const { value } = event.target;
-    handleRangeChange(value);
+    handleRangeChange(index, value);
   };
 
   const handleMouseEnter = () => {

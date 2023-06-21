@@ -6,17 +6,27 @@ import dummyData from './Dummy.js';
 import { useEffect, useState } from 'react';
 
 function App() {
+  const rangeStmt = [
+    'True',
+    'Mostly True',
+    'Half True',
+    'Mostly False',
+    'Half False',
+    'Pants on Fire',
+  ];
   const [isSubmit, setIsSubmit] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [questionState, setQuestionState] = useState(0);
   const currentQuestion = dummyData[questionState];
   const [userResponses, setUserResponses] = useState(
-    dummyData.map((data) => ({ statement: data, range: 0, text: '' }))
+    dummyData.map((data) => ({ statement: data, range: 0, rangeTxt:rangeStmt[0],  text: '' }))
   );
   const handleRangeChange = (index, newRangeValue) => {
+    console.log(index)
     setUserResponses((prevState) => {
       const newResponses = [...prevState];
       newResponses[index].range = newRangeValue;
+      newResponses[index].rangeTxt = rangeStmt[newRangeValue];
       return newResponses;
     });
   };

@@ -22,9 +22,8 @@ function QuestionCMPT({
       <StmtCMPT txt={data} />
       <RangeCMPT
         rangeValue={userResponse.range}
-        handleRangeChange={(newRangeValue) =>
-          handleRangeChange(index, newRangeValue)
-        }
+        handleRangeChange={handleRangeChange}
+        index={index}
       />
       <RadioCMPT
         originalTxt={data}

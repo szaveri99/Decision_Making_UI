@@ -26,7 +26,7 @@ export default function ModalCMPT({
               <b>Modified Text</b> : {eachResponse.text}
             </h1>
             <h1>
-              <b>Rating</b> : {eachResponse.range}
+              <b>Rating</b> : {eachResponse.rangeTxt}
             </h1>
           </div>
         );
