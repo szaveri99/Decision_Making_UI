@@ -19,7 +19,7 @@ function App() {
   const [questionState, setQuestionState] = useState(0);
   const currentQuestion = dummyData[questionState];
   const [userResponses, setUserResponses] = useState(
-    dummyData.map((data) => ({ statement: data, range: 0, rangeTxt:rangeStmt[0],  text: '' }))
+    dummyData.map((data) => ({ statement: data, range: 0, rangeTxt:rangeStmt[0],  text: 'N/A' }))
   );
   const handleRangeChange = (index, newRangeValue) => {
     console.log(index)

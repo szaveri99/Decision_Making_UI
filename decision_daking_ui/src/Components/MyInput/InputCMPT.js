@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 
 function InputCMPT({ originalTxt, handleInputChange, modifiedTxt }) {
   const [isSumbit, setIsSubmit] = useState(false);
+  const [inputState, setInputState] = useState(
+    modifiedTxt.trim() === 'N/A' ? originalTxt : modifiedTxt
+  );
+  console.log(inputState);
   const handleChange = (event) => {
+    setInputState(event.target.value);
     handleInputChange(event.target.value);
   };
   const handleSubmit = (event) => {
@@ -13,7 +18,7 @@ function InputCMPT({ originalTxt, handleInputChange, modifiedTxt }) {
     <>
       <div>
         <form onSubmit={handleSubmit}>
-          <input type='text' value={modifiedTxt} onChange={handleChange} />
+          <input type='text' value={inputState} onChange={handleChange} />
           <input type='submit' value={'submit'} />
         </form>
       </div>
