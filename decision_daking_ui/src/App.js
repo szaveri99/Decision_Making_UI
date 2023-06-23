@@ -19,10 +19,15 @@ function App() {
   const [questionState, setQuestionState] = useState(0);
   const currentQuestion = dummyData[questionState];
   const [userResponses, setUserResponses] = useState(
-    dummyData.map((data) => ({ statement: data, range: 0, rangeTxt:rangeStmt[0],  text: 'N/A' }))
+    dummyData.map((data) => ({
+      statement: data,
+      range: 0,
+      rangeTxt: rangeStmt[0],
+      text: 'N/A',
+    }))
   );
   const handleRangeChange = (index, newRangeValue) => {
-    console.log(index)
+    console.log(index);
     setUserResponses((prevState) => {
       const newResponses = [...prevState];
       newResponses[index].range = newRangeValue;
@@ -41,6 +46,12 @@ function App() {
 
   useEffect(() => {
     console.log(userResponses);
+    const getData = async () => {
+      const dataRequest = await fetch('http://localhost:5000/hello:123');
+      const data = await dataRequest.json();
+      console.log(data);
+    };
+    getData();
   }, [isSubmit]);
 
   return (
