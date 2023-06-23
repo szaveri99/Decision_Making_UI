@@ -17,10 +17,11 @@ function App() {
   const [isSubmit, setIsSubmit] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [questionState, setQuestionState] = useState(0);
-  const currentQuestion = dummyData[questionState];
+  const [questionDataState, setquestionDataState] = useState([{}]);
+  const currentQuestion = questionDataState[questionState].text;
   const [userResponses, setUserResponses] = useState(
-    dummyData.map((data) => ({
-      statement: data,
+    currentQuestion.map((data) => ({
+      statement: data.text,
       range: 0,
       rangeTxt: rangeStmt[0],
       text: 'N/A',
@@ -47,9 +48,10 @@ function App() {
   useEffect(() => {
     console.log(userResponses);
     const getData = async () => {
-      const dataRequest = await fetch('http://localhost:5000/hello:123');
+      const dataRequest = await fetch('http://localhost:5000/get-csv');
       const data = await dataRequest.json();
       console.log(data);
+      setquestionDataState(data)
     };
     getData();
   }, [isSubmit]);
