@@ -1,6 +1,8 @@
-from flask import Flask, jsonify
-import csv
+from flask import Flask, jsonify, request
 from flask_cors import CORS
+import csv
+import os
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
@@ -26,6 +28,28 @@ def get_csv():
        
     except Exception as e:
         return jsonify(error=str(e)), 500
+
+@app.route('/fetch-data', methods = ['POST'])
+
+def fetchData():
+    try:
+        data = request.get_json()
+                
+        if os.path.exists('response.csv') == False : 
+            with open('response.csv', 'a', newline= '') as file:
+                writer = csv.writer(file)
+                writer.writerow(['Text','Label'])
+        
+        with open('response.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(data.values())
+
+        res = {'text': list(data.values())[0],'label': list(data.values())[1]}
+        return jsonify(res)
+    
+    except Exception as e:
+        return jsonify(error=str(e)), 500
+    
 
 if __name__ == '__main__':
     app.run()
