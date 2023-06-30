@@ -28,7 +28,13 @@ def fetchData():
     try:
         data = request.get_json()
         data = pd.DataFrame(data)
-        data.rename(columns={'statement': 'Original Text', 'text': 'Modified Text','rangeTxt':'Label'}, inplace=True)
+        df = pd.read_csv('politifact_subset_data.csv')  
+
+        data.insert(loc = 2,
+                column = 'Original Label',
+                value = df['label'])
+        
+        data.rename(columns={'statement': 'Original Text', 'text': 'Modified Text','rangeTxt':'User Labelled'}, inplace=True)
         
         if os.path.exists('response.csv') == False : 
                 with open('response.csv', 'w') as file:
