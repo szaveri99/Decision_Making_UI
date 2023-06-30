@@ -9,7 +9,7 @@ function App() {
     const getData = async () => {
       const dataRequest = await fetch('http://localhost:5000/get-csv');
       const data = await dataRequest.json();
-      setquestionDataState(data);
+      setquestionDataState(data.slice(0,3));
     };
     getData();
   }, []);

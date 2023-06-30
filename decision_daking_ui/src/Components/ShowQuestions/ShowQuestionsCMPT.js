@@ -41,9 +41,22 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
     });
   };
 
-  useEffect(() => {
-    console.log(userResponses[questionState]);
-  }, [isSubmit]);
+  const handleSubmit = () => {
+    alert('Your Response Has submitted');
+    setIsSubmit(false);
+    setShowModal(false);
+    setQuestionState(0);
+    setUserResponses(
+      questionDataState.map((data) => ({
+        statement: data.text,
+        range: 0,
+        rangeTxt: rangeStmt[0],
+        text: 'N/A',
+      }))
+    );
+  };
+
+  useEffect(() => {}, [isSubmit]);
 
   return (
     <>
@@ -93,6 +106,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
               userResponses={userResponses}
               setIsSubmit={setIsSubmit}
               setShowModal={setShowModal}
+              handleSubmit={handleSubmit}
             />
           )}
         </div>

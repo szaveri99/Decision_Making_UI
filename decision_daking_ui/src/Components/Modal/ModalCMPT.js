@@ -8,8 +8,8 @@ import Modal from 'react-modal';
 export default function ModalCMPT({
   showModal,
   userResponses,
-  setIsSubmit,
   setShowModal,
+  handleSubmit,
 }) {
 
   const submitData = async (data) => {
@@ -55,11 +55,8 @@ export default function ModalCMPT({
         );
       })}
       <div className='btns'>
-        <button onClick={() => {
-          setIsSubmit(true);
-          submitData(userResponses);
-          setShowModal(false)}}>
-          Submit
+        <button onClick={() => handleSubmit()}>
+          submit
         </button>
         <button onClick={() => setShowModal(false)}>Close</button>
       </div>
