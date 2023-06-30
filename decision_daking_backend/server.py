@@ -7,13 +7,6 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
-@app.route('/hello:<int:id>')
-def hello_world(id):
-    data = {
-        'message': f'Hello, World! ID: {id}'
-    }
-    return jsonify(data)
-
 @app.route("/get-csv")
 def get_csv():
     try:
@@ -26,7 +19,7 @@ def get_csv():
                 csv_data.append(selected_data)
         return jsonify(csv_data)
        
-    except Exception as e:
+    except Exception as e: 
         return jsonify(error=str(e)), 500
 
 @app.route('/fetch-data', methods = ['POST'])
@@ -34,17 +27,19 @@ def get_csv():
 def fetchData():
     try:
         data = request.get_json()
-                
-        if os.path.exists('response.csv') == False : 
-            with open('response.csv', 'a', newline= '') as file:
-                writer = csv.writer(file)
-                writer.writerow(['Text','Label'])
+        data = pd.DataFrame(data)
+        data.rename(columns={'statement': 'Original Text', 'text': 'Modified Text','rangeTxt':'Label'}, inplace=True)
         
-        with open('response.csv', 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(data.values())
-
-        res = {'text': list(data.values())[0],'label': list(data.values())[1]}
+        if os.path.exists('response.csv') == False : 
+                with open('response.csv', 'w') as file:
+                    pass            
+                data.to_csv('response.csv', mode='w', index=False)
+        else:
+            existing_df = pd.read_csv('response.csv')
+            updated_df = pd.concat([existing_df, data], ignore_index=True)
+            updated_df.to_csv('response.csv', mode='a', index=False, header=False)
+            
+        res = {'text': "uploaded!!"}
         return jsonify(res)
     
     except Exception as e:
