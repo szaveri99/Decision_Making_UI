@@ -3,6 +3,9 @@ from flask_cors import CORS
 import csv
 import os
 import pandas as pd
+from transformers import BertForSequenceClassification, BertTokenizer
+from transformers import AutoTokenizer, AutoModel, AutoConfig, AutoModelForSequenceClassification
+import torch
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
@@ -23,7 +26,6 @@ def get_csv():
         return jsonify(error=str(e)), 500
 
 @app.route('/fetch-data', methods = ['POST'])
-
 def fetchData():
     try:
         data = request.get_json()
@@ -50,6 +52,30 @@ def fetchData():
     
     except Exception as e:
         return jsonify(error=str(e)), 500
+
+@app.route('/fetch-data-for-classifier', methods = ['POST'])
+def fetchDataClassifier():
+    request_data = request.get_json()
+    text = 'The “top ten most unhealthy U.S. cities” are San Francisco; Seattle; Portland, Oregon; San Diego; Honolulu; Washington; Austin, Texas; Irving, Texas; Portland, Maine; and Denver.'
+    print(text)
+    model_class, tokenizer_class, config_class = AutoModelForSequenceClassification,AutoTokenizer,AutoConfig
+    labels = ['True','False']
+    model_path = 'decision_daking_backend/Model_bert-base-uncased/Loss_CrossEntropy/Bin_012-345/Seed_0'
+    tokenizer = tokenizer_class.from_pretrained(model_path)
+    inputs = tokenizer(text, return_tensors="pt")
+    config = config_class.from_pretrained(model_path, num_labels=len(labels))
+    model = model_class.from_pretrained(model_path, config=config)
+
+    with torch.no_grad():
+        # model.eval()
+        outputs = model(**inputs)
+
+    # Get the predicted class label
+    predicted_class = torch.argmax(outputs.logits, dim=1).item()
+    class_label = {0: 'False', 1: 'True'}
+    predicted_class_label = class_label[predicted_class]
+    # return predicted_class_label
+    return jsonify(predicted_class_label)
     
 
 if __name__ == '__main__':
