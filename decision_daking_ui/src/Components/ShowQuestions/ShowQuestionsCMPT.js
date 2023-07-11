@@ -72,7 +72,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
           <div id='btn-component'>
             <BtnCMPT
               buttonID={'previous-btn'}
-              buttonName={'previous'}
+              buttonName={'↤  Previous'}
               handleBtnClick={() =>
                 setQuestionState((previousState) =>
                   Math.max(0, previousState - 1)
@@ -82,7 +82,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
             />
             <BtnCMPT
               buttonID={'next-btn'}
-              buttonName={'next'}
+              buttonName={'Next  ↦'}
               handleBtnClick={() =>
                 setQuestionState((previousState) =>
                   Math.min(questionDataState.length - 1, previousState + 1)
@@ -92,7 +92,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
             />
             <BtnCMPT
               buttonID={'submit-btn'}
-              buttonName={'submit'}
+              buttonName={'Submit'}
               shouldDisable={questionState !== questionDataState.length - 1}
               handleBtnClick={() => setShowModal(true)}
             />
