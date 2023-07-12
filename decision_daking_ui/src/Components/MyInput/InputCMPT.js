@@ -10,8 +10,15 @@ function InputCMPT({ originalTxt, handleInputChange, modifiedTxt }) {
     setInputState(event.target.value);
     handleInputChange(event.target.value);
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
+    const dataRequest = await fetch('http://localhost:5000/fetch-data-for-classifier', {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body:JSON.stringify({modified_txt:modifiedTxt})
+    });
     setIsSubmit(modifiedTxt !== '');
   };
   return (

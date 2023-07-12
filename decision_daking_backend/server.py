@@ -56,11 +56,11 @@ def fetchData():
 @app.route('/fetch-data-for-classifier', methods = ['POST'])
 def fetchDataClassifier():
     request_data = request.get_json()
-    text = 'The “top ten most unhealthy U.S. cities” are San Francisco; Seattle; Portland, Oregon; San Diego; Honolulu; Washington; Austin, Texas; Irving, Texas; Portland, Maine; and Denver.'
+    text = request_data['modified_txt']
     print(text)
     model_class, tokenizer_class, config_class = AutoModelForSequenceClassification,AutoTokenizer,AutoConfig
     labels = ['True','False']
-    model_path = 'decision_daking_backend/Model_bert-base-uncased/Loss_CrossEntropy/Bin_012-345/Seed_0'
+    model_path = '../DECISION_MAKING_UI/decision_daking_backend/Model_bert-base-uncased/Loss_CrossEntropy/Bin_012-345/Seed_0'
     tokenizer = tokenizer_class.from_pretrained(model_path)
     inputs = tokenizer(text, return_tensors="pt")
     config = config_class.from_pretrained(model_path, num_labels=len(labels))
