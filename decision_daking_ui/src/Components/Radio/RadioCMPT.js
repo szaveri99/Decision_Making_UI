@@ -14,7 +14,7 @@ function RadioCMPT({
   };
   return (
     <div>
-      <div>Do you want to make changes</div>
+      <div>Do you want to make changes in the Statement for AI to correctly predict the statement ?</div>
       <div>
         <label>
           <input
