@@ -5,12 +5,12 @@ import ModalCMPT from '../Modal';
 
 export default function ShowQuestionsCMPT({ questionDataState }) {
   const rangeStmt = [
-    'True',
-    'Mostly True',
-    'Half True',
-    'Mostly False',
-    'Half False',
-    'Pants on Fire',
+    'true',
+    'mostly-true',
+    'half-true',
+    'barely-false',
+    'false',
+    'pants-on-fire',
   ];
   const [isSubmit, setIsSubmit] = useState(false);
   const [showModal, setShowModal] = useState(false);
