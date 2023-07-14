@@ -2,8 +2,6 @@ import './index.css';
 import axios from 'axios';
 import React from 'react';
 import Modal from 'react-modal';
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 
 export default function ModalCMPT({
   showModal,
@@ -23,10 +21,8 @@ export default function ModalCMPT({
 
       const response = await axios.post('http://localhost:5000/fetch-data', formattedData);
       console.log(response.formattedData);
-      // toast.success('Data submitted successfully');
     } catch (error) {
       console.error(error);
-      // toast.error('Failed to submit data !!');
     }
   };
 
