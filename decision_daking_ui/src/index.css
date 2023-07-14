@@ -1,12 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Rowdies&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bacasime+Antique&display=swap');
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-image: linear-gradient(to right, rgba(7, 0, 0, 0.246), rgb(3, 90, 89));
   background-attachment: fixed;
   font-size: 20px;
-  font-family: 'Rowdies', cursive;
+  font-family: 'Bacasime Antique', serif;
 }
 
 #btn-component {
@@ -25,7 +24,9 @@ input[type="button"] {
   color: white;
   cursor: pointer;
   width: 130px;
+  margin-left: 5px;
 }
+
 #submit-btn{
   background-color: #16dd69;
   box-shadow: 0px 0px 10px black;
@@ -91,4 +92,22 @@ label {
 .prop-guidline{
   border: 1px solid white;
  box-shadow: 10px 12px 25px rgba(0, 0, 0, 0.752);
+ margin: 0 0 50px 0; 
+ font-family: 'Courier New', Courier, monospace;
+ font-size: 16px;
+ background-color: rgba(240, 248, 255, 0.445);
+}
+
+.prop-guidline p{
+  height: 10px;
+}
+
+.disabled-button {
+  background-color: #bdc3c7;
+  color: white;
+}
+
+.enabled-button {
+  background-color: #16dd69;
+  color: white;
 }
