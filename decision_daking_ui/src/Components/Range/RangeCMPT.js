@@ -3,12 +3,12 @@ import './index.css';
 
 function RangeCMPT({ rangeValue, handleRangeChange, index }) {
   const rangeStmt = [
-    'True',
-    'Mostly True',
-    'Half True',
-    'Mostly False',
-    'Half False',
-    'Pants on Fire',
+    'true',
+    'mostly-true',
+    'half-true',
+    'barely-false',
+    'false',
+    'pants-on-fire',
   ];
   const [showTooltip, setShowTooltip] = useState(false);
 
