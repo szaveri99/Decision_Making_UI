@@ -80,7 +80,7 @@ function InputCMPT({
               shouldDisable={
                 inputState.trim() === originalTxt || inputState.trim() === ''
               }
-              myStyle={{backgroundColor:(inputState.trim() === originalTxt || inputState.trim() === '') ? '' : 'green'}}
+              myStyle={{backgroundColor:(inputState.trim() === originalTxt || inputState.trim() === '') ? '' : '#2ecc71'}}
             />
             <BtnCMPT
               buttonID={'clear-btn'}
@@ -95,24 +95,24 @@ function InputCMPT({
           isOpen={showConfirmation}
           onRequestClose={handleConfirmationNo}
           contentLabel='Confirmation Modal'
-        >
-          {classifierValue === null ? <div>Loading...</div>:
+        className='confirmation-modal'>
+          {classifierValue === null ? <div className='load'>Loading...</div>:
           <><h2>Confirmation</h2><p>
-              for the <b>{inputState}.</b> the classifier shows{' '}
-              <b>{`${classifierValue}`}</b> but the user selected the statement as{' '}
+              For the <b>{inputState}</b> the Classifier shows{' '}
+              <b>{`${classifierValue}`}</b> and the user prefer the statement as{' '}
               <b>{userResponse.rangeTxt}</b>
               {rangeStatement}.
-            </p><p>Do you want to rewrite the text?</p><button onClick={handleConfirmationYes}>Yes</button><button onClick={handleConfirmationNo}>No</button></>
+            </p><p>Do you want to Re-Write the text?</p><button onClick={handleConfirmationYes}>Yes</button><button onClick={handleConfirmationNo}>No</button></>
             }
             </Modal>
       </div>
       {isSumbit && (
-        <div>
+        <div className='stmnt-text'>
           <p>
-            <b>Original text:</b> {originalTxt}
+            <b className='stmnt'>Original Text:</b> {originalTxt}
           </p>
           <p>
-            <b>Modified text:</b> {displayText}
+            <b className='stmnt'>Modified Text:</b> {displayText}
           </p>
         </div>
       )}
