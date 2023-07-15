@@ -15,6 +15,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
   const [isSubmit, setIsSubmit] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [questionState, setQuestionState] = useState(0);
+  const [isDisable, setIsDisable] = useState(false);
   const currentQuestion = questionDataState[questionState].text;
   const [userResponses, setUserResponses] = useState(
     questionDataState.map((data) => ({
@@ -68,6 +69,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
             handleRangeChange={handleRangeChange}
             handleTextChange={handleTextChange}
             userResponse={userResponses[questionState]}
+            setIsDisable={setIsDisable}
           />
           <div id='btn-component'>
             <BtnCMPT
@@ -88,7 +90,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
                   Math.min(questionDataState.length - 1, previousState + 1)
                 )
               }
-              shouldDisable={questionState === questionDataState.length - 1}
+              shouldDisable={isDisable || questionState === questionDataState.length - 1}
             />
             <BtnCMPT
               buttonID={'submit-btn'}

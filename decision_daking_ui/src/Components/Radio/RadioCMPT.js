@@ -7,14 +7,23 @@ function RadioCMPT({
   tickState,
   handleInputChange,
   userText,
+  setIsDisable,
+  rangeStatement,
+  userResponse,
+  setClassifierValue,
+  classifierValue,
 }) {
   const handleRadioChange = (event) => {
     const value = event.target.value;
     handleTick(value === 'yes');
+    setIsDisable(value === 'yes');
   };
   return (
     <div>
-      <div>Do you want to make changes in the Statement for AI to correctly predict the statement ?</div>
+      <div>
+        Do you want to make changes in the Statement for AI to correctly predict
+        the statement ?
+      </div>
       <div>
         <label>
           <input
@@ -42,6 +51,11 @@ function RadioCMPT({
           originalTxt={originalTxt}
           handleInputChange={handleInputChange}
           modifiedTxt={userText}
+          setIsDisable={setIsDisable}
+          rangeStatement={rangeStatement}
+          userResponse={userResponse}
+          setClassifierValue={setClassifierValue}
+          classifierValue={classifierValue}
         />
       )}
     </div>

@@ -27,7 +27,7 @@ function RangeCMPT({ rangeValue, handleRangeChange, index }) {
 
   return (
     <div style={{ position: 'relative' }}>
-      <input
+      True <input
         type='range'
         step={1}
         min={0}
@@ -37,6 +37,7 @@ function RangeCMPT({ rangeValue, handleRangeChange, index }) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       />
+      False
       {showTooltip && <span className='tooltip'>{rangeStmt[rangeValue]}</span>}
     </div>
   );

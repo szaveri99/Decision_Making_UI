@@ -1,6 +1,12 @@
 import React from 'react';
 
-function BtnCMPT({ buttonID, buttonName, handleBtnClick, shouldDisable }) {
+function BtnCMPT({
+  buttonID,
+  buttonName,
+  handleBtnClick,
+  shouldDisable,
+  myStyle,
+}) {
   if (buttonID === 'submit-btn' && shouldDisable) {
     return <></>;
   }
@@ -11,6 +17,7 @@ function BtnCMPT({ buttonID, buttonName, handleBtnClick, shouldDisable }) {
       value={buttonName}
       disabled={shouldDisable}
       onClick={handleBtnClick}
+      style={myStyle}
     />
   );
 }
