@@ -2,7 +2,9 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: linear-gradient(to right, rgba(7, 0, 0, 0.246), rgb(3, 90, 89));
+  /* background-image: linear-gradient(to right, rgba(57, 175, 134, 0.61), rgba(77, 106, 109, 0.767), rgba(121, 132, 120, 0.705) ); */
+  /* background-image: linear-gradient(to right, rgba(66, 75, 84, 0.61), rgb(77, 106, 109)); */
+  background-image: linear-gradient(to right, rgb(8, 24, 51),rgb(28, 41, 54));
   background-attachment: fixed;
   font-size: 20px;
   font-family: 'Bacasime Antique', serif;
@@ -67,7 +69,7 @@ form {
 input[type="text"], input[type="range"] {
   flex-grow: 1;
   margin-right: 10px;
-  padding: 10px;
+  padding: 5px;
   border-radius: 5px;
   border: 1px solid #bdc3c7;
 }
@@ -92,22 +94,83 @@ label {
 .prop-guidline{
   border: 1px solid white;
  box-shadow: 10px 12px 25px rgba(0, 0, 0, 0.752);
- margin: 0 0 50px 0; 
- font-family: 'Courier New', Courier, monospace;
+ margin: 0 0 30px 0; 
+ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
  font-size: 16px;
- background-color: rgba(240, 248, 255, 0.445);
+ background-color: rgba(223, 160, 110, 0.719);
 }
 
 .prop-guidline p{
   height: 10px;
 }
 
-.disabled-button {
-  background-color: #bdc3c7;
+.range-div{
+  display: flex;
+  justify-content: space-between;
+}
+
+.range-div input[type="range"] {
+  -webkit-appearance: none;
+  height: 5px;
+  background-image: linear-gradient(to right, #17ff00, #91e900, #c1d200, #dfb900, #f0a200, #f69200, #fb8000, #ff6d00, #ff5d00, #ff4b00, #ff3400,#ff0000);
+  border-radius: 5px;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.range-div input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 5px;
+  height: 20px;
+  background:#fff3d1 ;
+  border-radius: 0;
+  border: #fff3d1;
+  cursor: col-resize;
+}
+
+.confirmation-modal{
+  background-color:rgb(241, 241, 197);
+  box-shadow: 0px 0px 10px black;
+  border-radius: 15px;
+  height: 400px;
+  width: 65%;
+  margin: 10% 15% 10% 15%;
+}
+.confirmation-modal button{
+  margin-left: 15px;
+  width: 80px;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  background-color: #8BBD8B;
+  box-shadow: 0px 0px 10px black;
+}
+
+.confirmation-modal button:hover{
+  box-shadow: none;
+  transition: 0.3s ease-in-out;
+}
+
+.classifier-text{
+  text-align: center;
   color: white;
 }
 
-.enabled-button {
-  background-color: #16dd69;
+.stmnt{
+  color: #F86F03;
+  font-weight: bold;
+}
+
+.stmnt-text{
   color: white;
+}
+
+.load{
+  margin-top: 150px;
+  text-align: center;
+  font-size: 30px;
 }
