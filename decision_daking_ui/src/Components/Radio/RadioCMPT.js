@@ -20,11 +20,11 @@ function RadioCMPT({
   };
   return (
     <div>
-      <div>
-        Do you want to make changes in the Statement for AI to correctly predict
-        the statement ?
+      <div className='stmnt'>
+        For Classifier to correctly predict, Do you want to make changes in
+        the Statement ?
       </div>
-      <div>
+      <div className='stmnt-text'>
         <label>
           <input
             type='radio'
@@ -33,7 +33,7 @@ function RadioCMPT({
             onClick={handleRadioChange}
             checked={tickState}
           />
-          yes
+          Yes
         </label>
         <label>
           <input
@@ -43,7 +43,7 @@ function RadioCMPT({
             onClick={handleRadioChange}
             checked={!tickState}
           />
-          no
+          No
         </label>
       </div>
       {tickState && (
