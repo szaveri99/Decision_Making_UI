@@ -15,7 +15,7 @@ function QuestionCMPT({
   const classifierRef = useRef(null);
   const [tickState, setTickState] = useState(false);
   const currentInstructions =
-    '1)Start by consider the following range from <b>True</b> to <b>False</b> to interpret the statement.2)Enter the text in the provided input field to see the results that is provided by the classifier. 3)Click the Submit button to send the text to the server for classification. 4)Wait for the response to see the predicted class. Please keep in mind the following:. 1) Make sure you enter valid text that you want to classify, this will ensure accurate results. 2) Avoid submitting empty or irrelevant text, as it may affect the classification accuracy';
+    '<b>To use this application, follow these steps: <b/>. <i>1)Start by consider the following range from <b>True</b> to <b>False</b> to interpret the statement<i/>.<i>2)Enter the text in the provided input field to see the results that is provided by the classifier<i/>. <i>3)Click the Submit button to send the text to the server for classification<i/>. <i>4)Wait for the response to see the predicted class<i/>. <b>Please keep in mind the following:</b>.<i> 1) Make sure you enter valid text that you want to classify, this will ensure accurate results<i/>. <i>2) Avoid submitting empty or irrelevant text, as it may affect the classification accuracy <i/>';
   const txt = currentInstructions;
   const [classifierValue, setClassifierValue] = useState(null);
   if (classifierRef.current) {
@@ -31,19 +31,21 @@ function QuestionCMPT({
   return (
     <>
       <InstructionsCMPT insText={txt} />
-      <StmtCMPT txt={data} />
-      <div>
+      <b className='stmnt'>Statement:</b><i className='stmnt-text'><StmtCMPT txt={data} /></i>
+      <div className='range-div stmnt'>
         <RangeCMPT
           rangeValue={userResponse.range}
           handleRangeChange={handleRangeChange}
           index={index}
-        />
+        /> 
         {classifierValue !== null && (
-          <div>
+          <div className='stmnt'>
             True{' '}
-            <input type='range' step={1} min={0} max={1} ref={classifierRef} />{' '}
+            <input type='range' step={1} min={0} max={1} ref={classifierRef} /> {' '}
             False
+            <div className='classifier-text'>Classifier Detection</div>
           </div>
+          
         )}
       </div>
       <RadioCMPT
