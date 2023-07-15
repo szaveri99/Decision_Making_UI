@@ -33,21 +33,21 @@ function InputCMPT({
     if (inputState.trim() !== '') {
       setShowConfirmation(true);
     }
-    // const dataRequest = await fetch(
-    //   'http://localhost:5000/fetch-data-for-classifier',
-    //   {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     method: 'POST',
-    //     body: JSON.stringify({ modified_txt: modifiedTxt }),
-    //   }
-    // );
+    const dataRequest = await fetch(
+      'http://localhost:5000/fetch-data-for-classifier',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({ modified_txt: modifiedTxt }),
+      }
+    );
     setIsSubmit(modifiedTxt !== '');
-    // const response = await dataRequest.json(); // Parse the response as JSON
-    // const predictedClass = response;
-    // console.log(predictedClass);
-    setClassifierValue(true);
+    const response = await dataRequest.json(); // Parse the response as JSON
+    const predictedClass = response;
+    console.log(predictedClass);
+    setClassifierValue(predictedClass);
   };
   const handleClear = () => {
     setInputState('');
@@ -85,27 +85,26 @@ function InputCMPT({
             <BtnCMPT
               buttonID={'clear-btn'}
               buttonName={'Clear'}
-              handleBtnClick={handleClear}
+              handleBtnClick={handleClear} 
               shouldDisable={false}
             />
           </form>
         )}
+        
         <Modal
           isOpen={showConfirmation}
           onRequestClose={handleConfirmationNo}
           contentLabel='Confirmation Modal'
         >
-          <h2>Confirmation</h2>
-          <p>
-            for the <b>{inputState}.</b> the classifier shows{' '}
-            <b>{`${classifierValue}`}</b> but the user selected the statement as{' '}
-            <b>{userResponse.rangeTxt}</b>
-            {rangeStatement}.
-          </p>
-          <p>Do you want to rewrite the text?</p>
-          <button onClick={handleConfirmationYes}>Yes</button>
-          <button onClick={handleConfirmationNo}>No</button>
-        </Modal>
+          {classifierValue === null ? <div>Loading...</div>:
+          <><h2>Confirmation</h2><p>
+              for the <b>{inputState}.</b> the classifier shows{' '}
+              <b>{`${classifierValue}`}</b> but the user selected the statement as{' '}
+              <b>{userResponse.rangeTxt}</b>
+              {rangeStatement}.
+            </p><p>Do you want to rewrite the text?</p><button onClick={handleConfirmationYes}>Yes</button><button onClick={handleConfirmationNo}>No</button></>
+            }
+            </Modal>
       </div>
       {isSumbit && (
         <div>
