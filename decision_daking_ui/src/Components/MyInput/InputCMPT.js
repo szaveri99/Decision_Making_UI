@@ -80,7 +80,7 @@ function InputCMPT({
               shouldDisable={
                 inputState.trim() === originalTxt || inputState.trim() === ''
               }
-              myStyle={{backgroundColor:'black'}}
+              myStyle={{backgroundColor:(inputState.trim() === originalTxt || inputState.trim() === '') ? '' : 'green'}}
             />
             <BtnCMPT
               buttonID={'clear-btn'}
