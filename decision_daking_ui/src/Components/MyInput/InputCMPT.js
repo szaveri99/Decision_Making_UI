@@ -13,6 +13,7 @@ function InputCMPT({
   classifierValue,
 }) {
   const [isSumbit, setIsSubmit] = useState(false);
+  const [isOriginalTextSubmitted, setIsOriginalTextSubmitted] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [displayText, setDisplayText] = useState('');
   const [inputState, setInputState] = useState(
@@ -32,7 +33,14 @@ function InputCMPT({
     event.preventDefault();
     if (inputState.trim() !== '') {
       setShowConfirmation(true);
+      if (inputState.trim() === originalTxt) {
+        setIsOriginalTextSubmitted(true); // Enable the submit button for the first time
+      } else {
+        setIsOriginalTextSubmitted(false); // Disable the submit button for subsequent times
+      }
     }
+    setIsSubmit(true);
+    setClassifierValue(null);
     const dataRequest = await fetch(
       'http://localhost:5000/fetch-data-for-classifier',
       {
@@ -40,10 +48,10 @@ function InputCMPT({
           'Content-Type': 'application/json',
         },
         method: 'POST',
-        body: JSON.stringify({ modified_txt: modifiedTxt }),
+        body: JSON.stringify({ modified_txt: !isOriginalTextSubmitted ? originalTxt : modifiedTxt, }),
       }
     );
-    setIsSubmit(modifiedTxt !== '');
+    // setIsSubmit(true);
     const response = await dataRequest.json(); // Parse the response as JSON
     const predictedClass = response;
     console.log(predictedClass);
@@ -67,7 +75,11 @@ function InputCMPT({
     setIsDisable(false);
     setShouldHideForm(true);
   };
+
+  console.log(isSumbit)
+  console.log(isOriginalTextSubmitted)
   return (
+    
     <>
       <div>
         {shouldHideForm === false && (
@@ -78,9 +90,17 @@ function InputCMPT({
               buttonName={'Submit'}
               handleBtnClick={handleSubmit}
               shouldDisable={
-                inputState.trim() === originalTxt || inputState.trim() === ''
+                // inputState.trim() === originalTxt || inputState.trim() === ''
+                isSumbit && (isOriginalTextSubmitted && inputState.trim() === originalTxt)
               }
-              myStyle={{backgroundColor:(inputState.trim() === originalTxt || inputState.trim() === '') ? '' : '#2ecc71'}}
+              myStyle={{
+                backgroundColor: !(isSumbit && isOriginalTextSubmitted) && (inputState.trim() === originalTxt)
+                  ? '#2ecc71' 
+                  : (inputState.trim() === originalTxt || inputState.trim() === '')
+                    ? '' 
+                    : '#2ecc71' 
+              }}
+              
             />
             <BtnCMPT
               buttonID={'clear-btn'}
@@ -96,7 +116,7 @@ function InputCMPT({
           onRequestClose={handleConfirmationNo}
           contentLabel='Confirmation Modal'
         className='confirmation-modal'>
-          {classifierValue === null ? <div className='load'>Loading...</div>:
+          {classifierValue === null || classifierValue === undefined ? <div className='load'>Loading...</div>:
           <><h2>Confirmation</h2><p>
               For the <b>{inputState}</b> the Classifier shows{' '}
               <b>{`${classifierValue}`}</b> and the user prefer the statement as{' '}
