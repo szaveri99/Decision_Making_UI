@@ -25,6 +25,8 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
       text: 'N/A',
     }))
   );
+  const [shouldHideClassifier, setShouldHideClassifier] = useState(true);
+
   const handleRangeChange = (index, newRangeValue) => {
     setUserResponses((prevState) => {
       const newResponses = [...prevState];
@@ -70,6 +72,9 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
             handleTextChange={handleTextChange}
             userResponse={userResponses[questionState]}
             setIsDisable={setIsDisable}
+            currentIndex={questionState}
+            shouldHideClassifier={shouldHideClassifier}
+            setShouldHideClassifier={setShouldHideClassifier}
           />
           <div id='btn-component'>
             <BtnCMPT
@@ -85,12 +90,15 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
             <BtnCMPT
               buttonID={'next-btn'}
               buttonName={'Next  ↦'}
-              handleBtnClick={() =>
+              handleBtnClick={() => {
                 setQuestionState((previousState) =>
                   Math.min(questionDataState.length - 1, previousState + 1)
-                )
+                );
+                setShouldHideClassifier(true);
+              }}
+              shouldDisable={
+                isDisable || questionState === questionDataState.length - 1
               }
-              shouldDisable={isDisable || questionState === questionDataState.length - 1}
             />
             <BtnCMPT
               buttonID={'submit-btn'}

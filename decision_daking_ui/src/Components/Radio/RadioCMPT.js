@@ -10,8 +10,9 @@ function RadioCMPT({
   setIsDisable,
   rangeStatement,
   userResponse,
-  setClassifierValue,
-  classifierValue,
+  currentIndex,
+  setShouldHideClassifier,
+  setClassifierTxt,
 }) {
   const handleRadioChange = (event) => {
     const value = event.target.value;
@@ -21,8 +22,8 @@ function RadioCMPT({
   return (
     <div>
       <div className='stmnt'>
-      Do you want to see what classifier predicts?  
-      {/* For Classifier to correctly predict, Do you want to make changes in the Statement? */}
+        Do you want to see what classifier predicts?
+        {/* For Classifier to correctly predict, Do you want to make changes in the Statement? */}
       </div>
       <div className='stmnt-text'>
         <label>
@@ -54,8 +55,9 @@ function RadioCMPT({
           setIsDisable={setIsDisable}
           rangeStatement={rangeStatement}
           userResponse={userResponse}
-          setClassifierValue={setClassifierValue}
-          classifierValue={classifierValue}
+          currentIndex={currentIndex}
+          setShouldHideClassifier={setShouldHideClassifier}
+          setClassifierTxt={setClassifierTxt}
         />
       )}
     </div>
