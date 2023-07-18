@@ -39,6 +39,7 @@ function InputCMPT({
       );
       setIsSubmit(true);
       const response = await dataRequest.json();
+      setClassifierTxt(response);
       return response;
     },
     {
@@ -68,7 +69,7 @@ function InputCMPT({
     }
     setIsSubmit(true);
     setShouldHideClassifier(false);
-    setClassifierTxt(data);
+    
     mutate();
   };
   const handleClear = () => {
