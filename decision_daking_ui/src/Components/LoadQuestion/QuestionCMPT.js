@@ -28,7 +28,7 @@ function QuestionCMPT({
   return (
     <>
       <InstructionsCMPT insText={txt} />
-      <b className='stmnt'>Statement:</b>
+      <b className='stmnt'>Please, read the following statement and assess its veracity score on this given scale</b>
       <i className='stmnt-text'>
         <StmtCMPT txt={data} />
       </i>
