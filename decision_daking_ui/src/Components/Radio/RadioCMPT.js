@@ -22,7 +22,7 @@ function RadioCMPT({
   return (
     <div>
       <div className='stmnt'>
-        Do you want to see what classifier predicts?
+      Reveal what the classier predicts?
         {/* For Classifier to correctly predict, Do you want to make changes in the Statement? */}
       </div>
       <div className='stmnt-text'>
