@@ -98,6 +98,10 @@ function InputCMPT({
       <div>
         {shouldHideForm === false && (
           <form onSubmit={handleSubmit}>
+            <label className='stmnt-inp-text'>
+              First test the classifier accuracy on original statement. Then, rewrite with same meaning to mislead classifier.
+            </label>
+            <br/>
             <input type='text' value={inputState} onChange={handleChange} />
             <BtnCMPT
               buttonID={'submit-btn-text'}
@@ -136,17 +140,24 @@ function InputCMPT({
           className='confirmation-modal'
         >
           {isLoading ? (
-            <div className='load'>Loading...</div>
+            <div className='load'>The classifier is predicting the class for the statement, <br/><b>Please Hold On...</b></div>
           ) : (
             <>
               <h2>Confirmation</h2>
-              <p>
+              {/* <p>
                 For the <b>{inputState}</b> the Classifier shows{' '}
                 <b>{`${data}`}</b> and the user prefer the statement as{' '}
                 <b>{userResponse.rangeTxt}</b>
                 {rangeStatement}.
+              </p> */}
+              <p>
+                For the <b>{inputState}</b> the original classification score given by you was {' '}
+                <b>{userResponse.rangeTxt}</b> after your writing, the new classification score is {' '}
+                <b>{`${data}`}</b>
+                {rangeStatement}.
               </p>
-              <p>Do you want to Re-Write the text?</p>
+
+              <p>Are you satisfied with your work? Do you want to re-write the statement?</p>
               <button onClick={handleConfirmationYes}>Yes</button>
               <button onClick={handleConfirmationNo}>No</button>
             </>
