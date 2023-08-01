@@ -15,6 +15,7 @@ function QuestionCMPT({
   currentIndex,
   shouldHideClassifier,
   setShouldHideClassifier,
+  handleTextChangeSubmit,
 }) {
   const [tickState, setTickState] = useState(false);
   const currentInstructions =
@@ -55,6 +56,9 @@ function QuestionCMPT({
         currentIndex={currentIndex}
         setShouldHideClassifier={setShouldHideClassifier}
         setClassifierTxt={setClassifierTxt}
+        handleTextChangeSubmit={(previousTextValue, newTextValue)=>{
+          handleTextChangeSubmit(index, previousTextValue, newTextValue)
+        }}
       />
     </>
   );

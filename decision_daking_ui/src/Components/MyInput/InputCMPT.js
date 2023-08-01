@@ -13,14 +13,14 @@ function InputCMPT({
   currentIndex,
   setShouldHideClassifier,
   setClassifierTxt,
+  handleTextChangeSubmit,
 }) {
   const [isSumbit, setIsSubmit] = useState(false);
   const [isOriginalTextSubmitted, setIsOriginalTextSubmitted] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [displayText, setDisplayText] = useState('');
-  const [inputState, setInputState] = useState(
-    modifiedTxt.trim() === 'N/A' ? originalTxt : modifiedTxt
-  );
+  const [inputState, setInputState] = useState(modifiedTxt);
+
   const [shouldHideForm, setShouldHideForm] = useState(false);
   const { mutate, isLoading, data } = useMutation(
     `base-user-response-${currentIndex}`,
@@ -69,15 +69,16 @@ function InputCMPT({
     }
     setIsSubmit(true);
     setShouldHideClassifier(false);
-    
-    mutate();
+    console.log('line 74 input state', modifiedTxt, inputState)
+    handleTextChangeSubmit(displayText || originalTxt, inputState);
+    setDisplayText(modifiedTxt);
+    // mutate();
   };
   const handleClear = () => {
     setInputState('');
   };
 
   const handleConfirmationYes = () => {
-    setDisplayText(modifiedTxt);
     setInputState(inputState);
     setShowConfirmation(false);
     setIsDisable(true);
@@ -85,7 +86,6 @@ function InputCMPT({
 
   const handleConfirmationNo = () => {
     setInputState('');
-    setDisplayText(modifiedTxt);
     setShowConfirmation(false);
     setIsDisable(false);
     setShouldHideForm(true);
@@ -167,7 +167,7 @@ function InputCMPT({
       {isSumbit && (
         <div className='stmnt-text'>
           <p>
-            <b className='stmnt'>Original Text:</b> {originalTxt}
+            <b className='stmnt'>Original Text:</b> {userResponse.tempText}
           </p>
           <p>
             <b className='stmnt'>Modified Text:</b> {displayText}
