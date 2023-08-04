@@ -35,6 +35,7 @@ function InputCMPT({
           },
           method: 'POST',
           body: JSON.stringify({
+            original_txt: originalTxt,
             modified_txt: !isOriginalTextSubmitted ? originalTxt : modifiedTxt,
           }),
         }
