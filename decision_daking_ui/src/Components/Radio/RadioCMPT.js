@@ -13,7 +13,6 @@ function RadioCMPT({
   currentIndex,
   setShouldHideClassifier,
   setClassifierTxt,
-  handleTextChangeSubmit,
 }) {
   const handleRadioChange = (event) => {
     const value = event.target.value;
@@ -59,7 +58,6 @@ function RadioCMPT({
           currentIndex={currentIndex}
           setShouldHideClassifier={setShouldHideClassifier}
           setClassifierTxt={setClassifierTxt}
-          handleTextChangeSubmit={handleTextChangeSubmit}
         />
       )}
     </div>

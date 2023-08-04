@@ -15,7 +15,6 @@ function QuestionCMPT({
   currentIndex,
   shouldHideClassifier,
   setShouldHideClassifier,
-  handleTextChangeSubmit,
 }) {
   const [tickState, setTickState] = useState(false);
   const currentInstructions =
@@ -39,9 +38,6 @@ function QuestionCMPT({
           handleRangeChange={handleRangeChange}
           index={index}
         />
-        {shouldHideClassifier === false && (
-          <ClassifierCMPT classifierValue={classifierTxt} />
-        )}
       </div>
       <RadioCMPT
         originalTxt={data}
@@ -56,9 +52,6 @@ function QuestionCMPT({
         currentIndex={currentIndex}
         setShouldHideClassifier={setShouldHideClassifier}
         setClassifierTxt={setClassifierTxt}
-        handleTextChangeSubmit={(previousTextValue, newTextValue)=>{
-          handleTextChangeSubmit(index, previousTextValue, newTextValue)
-        }}
       />
     </>
   );

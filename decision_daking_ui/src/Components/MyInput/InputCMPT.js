@@ -13,13 +13,15 @@ function InputCMPT({
   currentIndex,
   setShouldHideClassifier,
   setClassifierTxt,
-  handleTextChangeSubmit,
 }) {
   const [isSumbit, setIsSubmit] = useState(false);
   const [isOriginalTextSubmitted, setIsOriginalTextSubmitted] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [displayText, setDisplayText] = useState('');
   const [inputState, setInputState] = useState(modifiedTxt);
+  const [stmtList, setStmtList] = useState([{
+    originalTxt: userResponse.statement,
+    modifiedTxt: userResponse.text
+  }]);
 
   const [shouldHideForm, setShouldHideForm] = useState(false);
   const { mutate, isLoading, data } = useMutation(
@@ -40,6 +42,11 @@ function InputCMPT({
       setIsSubmit(true);
       const response = await dataRequest.json();
       setClassifierTxt(response);
+
+      const newStmtObj = {};
+      newStmtObj.originalTxt = (stmtList.at(-1)).modifiedTxt;
+      newStmtObj.modifiedTxt = inputState;
+      setStmtList(prevStmts => [...prevStmts, newStmtObj])
       return response;
     },
     {
@@ -48,6 +55,14 @@ function InputCMPT({
       refetchOnWindowFocus: false,
     }
   );
+  const myMutate = () => {
+    const newStmtObj = {};
+    newStmtObj.originalTxt = (stmtList.at(-1)).modifiedTxt;
+    newStmtObj.modifiedTxt = inputState;
+
+    console.log(stmtList);
+    setStmtList(prevStmts => [...prevStmts, newStmtObj])
+  }
 
   useEffect(() => {
     Modal.setAppElement('#root'); // Set the app element
@@ -69,10 +84,7 @@ function InputCMPT({
     }
     setIsSubmit(true);
     setShouldHideClassifier(false);
-    console.log('line 74 input state', modifiedTxt, inputState)
-    handleTextChangeSubmit(displayText || originalTxt, inputState);
-    setDisplayText(modifiedTxt);
-    // mutate();
+    myMutate();
   };
   const handleClear = () => {
     setInputState('');
@@ -89,6 +101,7 @@ function InputCMPT({
     setShowConfirmation(false);
     setIsDisable(false);
     setShouldHideForm(true);
+    userResponse.text = userResponse.statement;
   };
 
   console.log(isSumbit);
@@ -164,16 +177,16 @@ function InputCMPT({
           )}
         </Modal>
       </div>
-      {isSumbit && (
-        <div className='stmnt-text'>
+      {isSumbit && stmtList.length > 1 && (stmtList.slice(1).map((eachStmt, indexKey) => (
+        <div className='stmnt-text' key={indexKey}>
           <p>
-            <b className='stmnt'>Original Text:</b> {userResponse.tempText}
+            <b className='stmnt'>Original Text:</b> {eachStmt.originalTxt}
           </p>
           <p>
-            <b className='stmnt'>Modified Text:</b> {displayText}
+            <b className='stmnt'>Modified Text:</b> {eachStmt.modifiedTxt}
           </p>
         </div>
-      )}
+      )))}
     </>
   );
 }

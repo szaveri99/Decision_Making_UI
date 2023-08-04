@@ -23,7 +23,6 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
       range: 0,
       rangeTxt: rangeStmt[0],
       text: data.text,
-      tempText: data.text,
     }))
   );
   const [shouldHideClassifier, setShouldHideClassifier] = useState(true);
@@ -46,16 +45,6 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
     });
   };
 
-  const handleTextChangeSubmit = (index, previousTextValue, newTextValue) => {
-    console.log(index, previousTextValue, newTextValue);
-    setUserResponses((prevState) => {
-      const newResponses = [...prevState];
-      newResponses[index].tempText = previousTextValue;
-      newResponses[index].text = newTextValue;
-      return newResponses;
-    });
-  }
-
   const handleSubmit = () => {
     console.log(userResponses);
     alert('Your Response Has submitted');
@@ -67,8 +56,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
         statement: data.text,
         range: 0,
         rangeTxt: rangeStmt[0],
-        text: 'N/A',
-        tempText: 'N/A',
+        text: data.text,
       }))
     );
   };
@@ -89,7 +77,6 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
             currentIndex={questionState}
             shouldHideClassifier={shouldHideClassifier}
             setShouldHideClassifier={setShouldHideClassifier}
-            handleTextChangeSubmit={handleTextChangeSubmit}
           />
           <div id='btn-component'>
             <BtnCMPT
