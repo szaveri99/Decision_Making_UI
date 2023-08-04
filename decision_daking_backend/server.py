@@ -56,30 +56,34 @@ def fetchData():
 @app.route('/fetch-data-for-classifier', methods = ['POST'])
 def fetchDataClassifier():
     request_data = request.get_json()
-    print(request_data)
-    text = request_data['modified_txt']
-    print(text)
+    # request_data = {'original_txt': 'Three mass shootings were meant to distract from Hillary Clinton controversies.', 'modified_txt': 'Three mass shootings were actually not meant to distract from Hillary Clinton controversies'}   
+    # text = request_data['modified_txt']
+    # print(text)
+    print("inside function")
     model_class, tokenizer_class, config_class = AutoModelForSequenceClassification,AutoTokenizer,AutoConfig
     labels = ['True','False']
     model_path = 'Model_bert-base-uncased/Loss_CrossEntropy/Bin_012-345/Seed_0'
     tokenizer = tokenizer_class.from_pretrained(model_path)
-    inputs = tokenizer(text, return_tensors="pt")
-    config = config_class.from_pretrained(model_path, num_labels=len(labels))
-    model = model_class.from_pretrained(model_path, config=config)
-    print(text)
-    with torch.no_grad():
-        # model.eval()
-        outputs = model(**inputs)
+    print("for loop starting")
+    predicted_class_label = []
+    for text in request_data.values():
+        inputs = tokenizer(text, return_tensors="pt")
+        config = config_class.from_pretrained(model_path, num_labels=len(labels))
+        model = model_class.from_pretrained(model_path, config=config)
+        print(text)
+        with torch.no_grad():
+            # model.eval()
+            outputs = model(**inputs)
 
-    # Get the predicted class label
-    predicted_class = torch.argmax(outputs.logits, dim=1).item()
-    class_label = {0: 'False', 1: 'True'}
-    predicted_class_label = class_label[predicted_class]
-    print(predicted_class)
+        # Get the predicted class label
+        predicted_class = torch.argmax(outputs.logits, dim=1).item()
+        class_label = {0: 'False', 1: 'True'}
+        predicted_class_label.append(class_label[predicted_class])
+        print(predicted_class_label)
     # return predicted_class_label
     return jsonify(predicted_class_label)
     
 
 if __name__ == '__main__':
     app.run()
-
+    fetchDataClassifier()
