@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Range from 'rc-slider';
+import 'rc-slider/assets/index.css';
 import './index.css';
 
 function RangeCMPT({ rangeValue, handleRangeChange, index }) {
@@ -10,35 +12,22 @@ function RangeCMPT({ rangeValue, handleRangeChange, index }) {
     'false',
     'pants-on-fire',
   ];
-  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleChange = (event) => {
-    const { value } = event.target;
-    handleRangeChange(index, value);
-  };
-
-  const handleMouseEnter = () => {
-    setShowTooltip(true);
-  };
-
-  const handleMouseLeave = () => {
-    setShowTooltip(false);
+    // const { value } = event.target;
+    handleRangeChange(index, event);
   };
 
   return (
     <div style={{ position: 'relative' }}>
-      True <input
-        type='range'
+      True <Range
         step={1}
         min={0}
         max={5}
-        value={rangeValue}
-        onInput={handleChange}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      />
-      False
-      {showTooltip && <span className='tooltip'>{rangeStmt[rangeValue]}</span>}
+        defaultValue={0}
+        ariaLabelForHandle={'hello'}
+        onChange={handleChange}
+      /> False
     </div>
   );
 }

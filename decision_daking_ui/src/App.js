@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query';
-import { useEffect, useState } from 'react';
 import './index.css';
 
 import ShowQuestionsCMPT from './Components/ShowQuestions/ShowQuestionsCMPT';
@@ -19,7 +18,6 @@ function App() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log(data);
   if (data.length < 2) return;
   return (
     <>

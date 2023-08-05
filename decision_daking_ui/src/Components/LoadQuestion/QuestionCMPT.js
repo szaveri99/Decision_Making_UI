@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InstructionsCMPT from '../Instructions';
-import ClassifierCMPT from '../Classifier';
 import StmtCMPT from '../Stmt';
 import RangeCMPT from '../Range';
 import RadioCMPT from '../Radio';
@@ -50,7 +49,9 @@ function QuestionCMPT({
         setIsDisable={setIsDisable}
         userResponse={userResponse}
         currentIndex={currentIndex}
+        shouldHideClassifier={shouldHideClassifier}
         setShouldHideClassifier={setShouldHideClassifier}
+        classifierTxt={classifierTxt}
         setClassifierTxt={setClassifierTxt}
       />
     </>

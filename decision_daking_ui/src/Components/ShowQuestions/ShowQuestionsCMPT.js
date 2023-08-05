@@ -37,7 +37,6 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
   };
 
   const handleTextChange = (index, newTextValue) => {
-    console.log(index, newTextValue);
     setUserResponses((prevState) => {
       const newResponses = [...prevState];
       newResponses[index].text = newTextValue;

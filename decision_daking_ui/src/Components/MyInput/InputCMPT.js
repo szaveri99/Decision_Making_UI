@@ -13,6 +13,7 @@ function InputCMPT({
   currentIndex,
   setShouldHideClassifier,
   setClassifierTxt,
+  handleTick,
 }) {
   const [isSumbit, setIsSubmit] = useState(false);
   const [isOriginalTextSubmitted, setIsOriginalTextSubmitted] = useState(false);
@@ -27,6 +28,10 @@ function InputCMPT({
   const { mutate, isLoading, data } = useMutation(
     `base-user-response-${currentIndex}`,
     async () => {
+      const newStmtObj = {};
+      newStmtObj.originalTxt = (stmtList.at(-1)).modifiedTxt;
+      newStmtObj.modifiedTxt = inputState;
+
       const dataRequest = await fetch(
         'http://localhost:5000/fetch-data-for-classifier',
         {
@@ -35,18 +40,18 @@ function InputCMPT({
           },
           method: 'POST',
           body: JSON.stringify({
-            original_txt: originalTxt,
-            modified_txt: !isOriginalTextSubmitted ? originalTxt : modifiedTxt,
+            original_txt: newStmtObj.originalTxt,
+            modified_txt: newStmtObj.modifiedTxt,
           }),
         }
       );
       setIsSubmit(true);
       const response = await dataRequest.json();
+      newStmtObj.originalTxtClassifier = response.originalTxtClassifier;
+      newStmtObj.modifiedTxtClassifier = response.modifiedTxtClassifier;
+
       setClassifierTxt(response);
 
-      const newStmtObj = {};
-      newStmtObj.originalTxt = (stmtList.at(-1)).modifiedTxt;
-      newStmtObj.modifiedTxt = inputState;
       setStmtList(prevStmts => [...prevStmts, newStmtObj])
       return response;
     },
@@ -56,14 +61,6 @@ function InputCMPT({
       refetchOnWindowFocus: false,
     }
   );
-  const myMutate = () => {
-    const newStmtObj = {};
-    newStmtObj.originalTxt = (stmtList.at(-1)).modifiedTxt;
-    newStmtObj.modifiedTxt = inputState;
-
-    console.log(stmtList);
-    setStmtList(prevStmts => [...prevStmts, newStmtObj])
-  }
 
   useEffect(() => {
     Modal.setAppElement('#root'); // Set the app element
@@ -85,7 +82,7 @@ function InputCMPT({
     }
     setIsSubmit(true);
     setShouldHideClassifier(false);
-    myMutate();
+    mutate();
   };
   const handleClear = () => {
     setInputState('');
@@ -100,13 +97,11 @@ function InputCMPT({
   const handleConfirmationNo = () => {
     setInputState('');
     setShowConfirmation(false);
-    setIsDisable(false);
+    setIsDisable(true);
     setShouldHideForm(true);
+    handleTick(false);
     userResponse.text = userResponse.statement;
   };
-
-  console.log(isSumbit);
-  console.log(isOriginalTextSubmitted);
   return (
     <>
       <div>

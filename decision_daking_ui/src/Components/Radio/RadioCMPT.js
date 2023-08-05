@@ -11,7 +11,9 @@ function RadioCMPT({
   rangeStatement,
   userResponse,
   currentIndex,
+  shouldHideClassifier,
   setShouldHideClassifier,
+  classifierTxt,
   setClassifierTxt,
 }) {
   const handleRadioChange = (event) => {
@@ -56,8 +58,11 @@ function RadioCMPT({
           rangeStatement={rangeStatement}
           userResponse={userResponse}
           currentIndex={currentIndex}
+          shouldHideClassifier={shouldHideClassifier}
           setShouldHideClassifier={setShouldHideClassifier}
+          classifierTxt={classifierTxt}
           setClassifierTxt={setClassifierTxt}
+          handleTick={handleTick}
         />
       )}
     </div>
