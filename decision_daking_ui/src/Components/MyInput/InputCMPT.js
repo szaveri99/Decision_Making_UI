@@ -46,12 +46,15 @@ function InputCMPT({
       );
       setIsSubmit(true);
       const response = await dataRequest.json();
-      newStmtObj.originalTxtClassifier = response.originalTxtClassifier;
-      newStmtObj.modifiedTxtClassifier = response.modifiedTxtClassifier;
+      // newStmtObj.originalTxtClassifier = response.originalTxtClassifier;
+      // newStmtObj.modifiedTxtClassifier = response.modifiedTxtClassifier;
 
       setClassifierTxt(response);
 
       setStmtList(prevStmts => [...prevStmts, newStmtObj])
+
+      userResponse.submittedStmt.push({stmt:newStmtObj, classifier:response, rangeVal: userResponse.rangeTxt});
+
       return response;
     },
     {
@@ -77,6 +80,7 @@ function InputCMPT({
     
     setStmtList(prevStmts => [...prevStmts, newStmtObj])
     setClassifierTxt(response);
+    userResponse.submittedStmt.push({stmt:newStmtObj, classifier:response, rangeVal:userResponse.rangeTxt});
   }
 
   const handleChange = (event) => {
@@ -95,7 +99,8 @@ function InputCMPT({
     }
     setIsSubmit(true);
     setShouldHideClassifier(false);
-    newMutate();
+    mutate();
+    // newMutate() uncomment this and comment mutate call if want to test
   };
   const handleClear = () => {
     setInputState('');
