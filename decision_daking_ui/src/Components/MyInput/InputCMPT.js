@@ -6,19 +6,18 @@ import { useMutation } from 'react-query';
 function InputCMPT({
   originalTxt,
   handleInputChange,
-  modifiedTxt,
   setIsDisable,
-  rangeStatement,
   userResponse,
   currentIndex,
   setShouldHideClassifier,
+  classifierTxt,
   setClassifierTxt,
   handleTick,
 }) {
   const [isSumbit, setIsSubmit] = useState(false);
   const [isOriginalTextSubmitted, setIsOriginalTextSubmitted] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [inputState, setInputState] = useState(modifiedTxt);
+  const [inputState, setInputState] = useState(userResponse.text);
   const [stmtList, setStmtList] = useState([{
     originalTxt: userResponse.statement,
     modifiedTxt: userResponse.text
@@ -66,6 +65,20 @@ function InputCMPT({
     Modal.setAppElement('#root'); // Set the app element
   }, []);
 
+  const newMutate = () => {
+    setIsSubmit(true);
+    const newStmtObj = {};
+    newStmtObj.originalTxt = (stmtList.at(-1)).modifiedTxt;
+    newStmtObj.modifiedTxt = inputState;
+
+    const response = {};
+    response.originalTxtClassifier = true;
+    response.modifiedTxtClassifier = false;
+    
+    setStmtList(prevStmts => [...prevStmts, newStmtObj])
+    setClassifierTxt(response);
+  }
+
   const handleChange = (event) => {
     setInputState(event.target.value);
     handleInputChange(event.target.value);
@@ -82,7 +95,7 @@ function InputCMPT({
     }
     setIsSubmit(true);
     setShouldHideClassifier(false);
-    mutate();
+    newMutate();
   };
   const handleClear = () => {
     setInputState('');
@@ -102,6 +115,9 @@ function InputCMPT({
     handleTick(false);
     userResponse.text = userResponse.statement;
   };
+  console.log('classifier Text', classifierTxt);
+  const recentStmt = stmtList.at(-1);
+  console.log('stmt', stmtList.at(-1));
   return (
     <>
       <div>
@@ -147,8 +163,8 @@ function InputCMPT({
           onRequestClose={handleConfirmationNo}
           contentLabel='Confirmation Modal'
           className='confirmation-modal'
-        >
-          {isLoading ? (
+          >
+          {isLoading && classifierTxt !== null ? (
             <div className='load'>The classifier is predicting the class for the statement, <br/><b>Please Hold On...</b></div>
           ) : (
             <>
@@ -159,13 +175,14 @@ function InputCMPT({
                 <b>{userResponse.rangeTxt}</b>
                 {rangeStatement}.
               </p> */}
-              <p>
+              {/* <p>
                 For the <b>{inputState}</b> the original classification score given by you was {' '}
                 <b>{userResponse.rangeTxt}</b> after your writing, the new classification score is {' '}
                 <b>{`${data}`}</b>
                 {rangeStatement}.
-              </p>
-
+              </p> */}
+              <p><b>Original Txt:</b>{recentStmt.originalTxt} <b>{`${classifierTxt?.originalTxtClassifier}`}</b></p>
+              <p><b>Modified Txt:</b>{recentStmt.modifiedTxt} <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b></p>
               <p>Are you satisfied with your work? Do you want to re-write the statement?</p>
               <button onClick={handleConfirmationYes}>Yes</button>
               <button onClick={handleConfirmationNo}>No</button>
@@ -176,10 +193,10 @@ function InputCMPT({
       {isSumbit && stmtList.length > 1 && (stmtList.slice(1).map((eachStmt, indexKey) => (
         <div className='stmnt-text' key={indexKey}>
           <p>
-            <b className='stmnt'>Original Text:</b> {eachStmt.originalTxt}
+            <b className='stmnt'>Original Text:</b> {eachStmt.originalTxt}. <b>{`${classifierTxt?.originalTxtClassifier}`}</b>
           </p>
           <p>
-            <b className='stmnt'>Modified Text:</b> {eachStmt.modifiedTxt}
+            <b className='stmnt'>Modified Text:</b> {eachStmt.modifiedTxt}. <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>
           </p>
         </div>
       )))}

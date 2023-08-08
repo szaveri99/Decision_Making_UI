@@ -45,7 +45,6 @@ function QuestionCMPT({
         handleInputChange={(newTextValue) =>
           handleTextChange(index, newTextValue)
         }
-        userText={userResponse.text}
         setIsDisable={setIsDisable}
         userResponse={userResponse}
         currentIndex={currentIndex}

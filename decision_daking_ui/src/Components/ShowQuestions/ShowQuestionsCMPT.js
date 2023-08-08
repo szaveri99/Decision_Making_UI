@@ -23,6 +23,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
       range: 0,
       rangeTxt: rangeStmt[0],
       text: data.text,
+      submittedStmt: [],
     }))
   );
   const [shouldHideClassifier, setShouldHideClassifier] = useState(true);
@@ -56,6 +57,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
         range: 0,
         rangeTxt: rangeStmt[0],
         text: data.text,
+        submittedStmt:[],
       }))
     );
   };

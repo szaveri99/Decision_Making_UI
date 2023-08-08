@@ -6,9 +6,7 @@ function RadioCMPT({
   handleTick,
   tickState,
   handleInputChange,
-  userText,
   setIsDisable,
-  rangeStatement,
   userResponse,
   currentIndex,
   shouldHideClassifier,
@@ -17,10 +15,11 @@ function RadioCMPT({
   setClassifierTxt,
 }) {
   const handleRadioChange = (event) => {
-    const value = event.target.value;
+    const value = event.target.value
     handleTick(value === 'yes');
     setIsDisable(value === 'yes');
   };
+  console.log(userResponse.rangeTxt);
   return (
     <div>
       <div className='stmnt'>
@@ -53,9 +52,7 @@ function RadioCMPT({
         <InputCMPT
           originalTxt={originalTxt}
           handleInputChange={handleInputChange}
-          modifiedTxt={userText}
           setIsDisable={setIsDisable}
-          rangeStatement={rangeStatement}
           userResponse={userResponse}
           currentIndex={currentIndex}
           shouldHideClassifier={shouldHideClassifier}
