@@ -9,6 +9,7 @@ function InputCMPT({
   setIsDisable,
   userResponse,
   currentIndex,
+  shouldHideClassifier,
   setShouldHideClassifier,
   classifierTxt,
   setClassifierTxt,
@@ -18,17 +19,19 @@ function InputCMPT({
   const [isOriginalTextSubmitted, setIsOriginalTextSubmitted] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [inputState, setInputState] = useState(userResponse.text);
-  const [stmtList, setStmtList] = useState([{
-    originalTxt: userResponse.statement,
-    modifiedTxt: userResponse.text
-  }]);
+  const [stmtList, setStmtList] = useState([
+    {
+      originalTxt: userResponse.statement,
+      modifiedTxt: userResponse.text,
+    },
+  ]);
 
   const [shouldHideForm, setShouldHideForm] = useState(false);
   const { mutate, isLoading, data } = useMutation(
     `base-user-response-${currentIndex}`,
     async () => {
       const newStmtObj = {};
-      newStmtObj.originalTxt = (stmtList.at(-1)).modifiedTxt;
+      newStmtObj.originalTxt = stmtList.at(-1).modifiedTxt;
       newStmtObj.modifiedTxt = inputState;
 
       const dataRequest = await fetch(
@@ -51,9 +54,14 @@ function InputCMPT({
 
       setClassifierTxt(response);
 
-      setStmtList(prevStmts => [...prevStmts, newStmtObj])
+      setStmtList((prevStmts) => [...prevStmts, newStmtObj]);
 
-      userResponse.submittedStmt.push({stmt:newStmtObj, classifier:response, rangeVal: userResponse.rangeTxt});
+      userResponse.submittedStmt.push({
+        stmt: newStmtObj,
+        classifier: response,
+        rangeVal: userResponse.rangeTxt,
+      });
+      setShouldHideClassifier(false);
 
       return response;
     },
@@ -71,17 +79,25 @@ function InputCMPT({
   const newMutate = () => {
     setIsSubmit(true);
     const newStmtObj = {};
-    newStmtObj.originalTxt = (stmtList.at(-1)).modifiedTxt;
+    newStmtObj.originalTxt = stmtList.at(-1).modifiedTxt;
     newStmtObj.modifiedTxt = inputState;
 
     const response = {};
     response.originalTxtClassifier = true;
     response.modifiedTxtClassifier = false;
-    
-    setStmtList(prevStmts => [...prevStmts, newStmtObj])
+
+    setStmtList((prevStmts) => [...prevStmts, newStmtObj]);
     setClassifierTxt(response);
-    userResponse.submittedStmt.push({stmt:newStmtObj, classifier:response, rangeVal:userResponse.rangeTxt});
-  }
+    userResponse.submittedStmt.push({
+      stmt: newStmtObj,
+      classifier: response,
+      rangeVal: userResponse.rangeTxt,
+    });
+    setTimeout((e) => {
+      console.log('from line 97',e);
+      setShouldHideClassifier(false);
+    },1000)
+  };
 
   const handleChange = (event) => {
     setInputState(event.target.value);
@@ -98,8 +114,7 @@ function InputCMPT({
       }
     }
     setIsSubmit(true);
-    setShouldHideClassifier(false);
-    mutate();
+    newMutate();
     // newMutate() uncomment this and comment mutate call if want to test
   };
   const handleClear = () => {
@@ -110,6 +125,7 @@ function InputCMPT({
     setInputState(inputState);
     setShowConfirmation(false);
     setIsDisable(true);
+    setShouldHideClassifier(true);
   };
 
   const handleConfirmationNo = () => {
@@ -118,20 +134,23 @@ function InputCMPT({
     setIsDisable(true);
     setShouldHideForm(true);
     handleTick(false);
+    setShouldHideClassifier(true);
     userResponse.text = userResponse.statement;
   };
   console.log('classifier Text', classifierTxt);
   const recentStmt = stmtList.at(-1);
   console.log('stmt', stmtList.at(-1));
+  console.log(shouldHideClassifier);
   return (
     <>
       <div>
         {shouldHideForm === false && (
           <form onSubmit={handleSubmit}>
             <label className='stmnt-inp-text'>
-              First test the classifier accuracy on original statement. Then, rewrite with same meaning to mislead classifier.
+              First test the classifier accuracy on original statement. Then,
+              rewrite with same meaning to mislead classifier.
             </label>
-            <br/>
+            <br />
             <input type='text' value={inputState} onChange={handleChange} />
             <BtnCMPT
               buttonID={'submit-btn-text'}
@@ -168,10 +187,8 @@ function InputCMPT({
           onRequestClose={handleConfirmationNo}
           contentLabel='Confirmation Modal'
           className='confirmation-modal'
-          >
-          {isLoading && classifierTxt !== null ? (
-            <div className='load'>The classifier is predicting the class for the statement, <br/><b>Please Hold On...</b></div>
-          ) : (
+        >
+          {shouldHideClassifier === false && classifierTxt !== null ? (
             <>
               <h2>Confirmation</h2>
               {/* <p>
@@ -186,25 +203,45 @@ function InputCMPT({
                 <b>{`${data}`}</b>
                 {rangeStatement}.
               </p> */}
-              <p><b>Original Txt:</b>{recentStmt.originalTxt} <b>{`${classifierTxt?.originalTxtClassifier}`}</b></p>
-              <p><b>Modified Txt:</b>{recentStmt.modifiedTxt} <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b></p>
-              <p>Are you satisfied with your work? Do you want to re-write the statement?</p>
+              <p>
+                <b>Original Txt:</b>
+                {recentStmt.originalTxt}{' '}
+                <b>{`${classifierTxt?.originalTxtClassifier}`}</b>
+              </p>
+              <p>
+                <b>Modified Txt:</b>
+                {recentStmt.modifiedTxt}{' '}
+                <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>
+              </p>
+              <p>
+                Are you satisfied with your work? Do you want to re-write the
+                statement?
+              </p>
               <button onClick={handleConfirmationYes}>Yes</button>
               <button onClick={handleConfirmationNo}>No</button>
             </>
+          ) : (
+            <div className='load'>
+              The classifier is predicting the class for the statement, <br />
+              <b>Please Hold On...</b>
+            </div>
           )}
         </Modal>
       </div>
-      {isSumbit && stmtList.length > 1 && (stmtList.slice(1).map((eachStmt, indexKey) => (
-        <div className='stmnt-text' key={indexKey}>
-          <p>
-            <b className='stmnt'>Original Text:</b> {eachStmt.originalTxt}. <b>{`${classifierTxt?.originalTxtClassifier}`}</b>
-          </p>
-          <p>
-            <b className='stmnt'>Modified Text:</b> {eachStmt.modifiedTxt}. <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>
-          </p>
-        </div>
-      )))}
+      {isSumbit &&
+        stmtList.length > 1 &&
+        stmtList.slice(1).map((eachStmt, indexKey) => (
+          <div className='stmnt-text' key={indexKey}>
+            <p>
+              <b className='stmnt'>Original Text:</b> {eachStmt.originalTxt}.{' '}
+              <b>{`${classifierTxt?.originalTxtClassifier}`}</b>
+            </p>
+            <p>
+              <b className='stmnt'>Modified Text:</b> {eachStmt.modifiedTxt}.{' '}
+              <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>
+            </p>
+          </div>
+        ))}
     </>
   );
 }
