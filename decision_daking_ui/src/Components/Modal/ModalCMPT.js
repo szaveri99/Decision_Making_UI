@@ -49,6 +49,11 @@ export default function ModalCMPT({
               <h1>
                 <b>Rating</b> : {eachStmt.rangeVal}
               </h1>
+              <div>
+                <h1>Classifier Values</h1>
+                <b>Original: {`${eachStmt.classifier.originalTxtClassifier}`}</b>
+                <b>Original: {`${eachStmt.classifier.modifiedTxtClassifier}`}</b>
+              </div>
             </div>
           );
         });
