@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import QuestionCMPT from '../LoadQuestion';
 import BtnCMPT from '../Button';
 import ModalCMPT from '../Modal';
+import axios from 'axios';
 
 export default function ShowQuestionsCMPT({ questionDataState }) {
   const rangeStmt = [
@@ -45,9 +46,16 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
     });
   };
 
-  const handleSubmit = () => {
+
+  const handleSubmit = async () => {
     console.log(userResponses);
     alert('Your Response Has submitted');
+    
+    await axios.post(
+      'http://localhost:5000/fetch-data',
+      userResponses
+    );
+    
     setIsSubmit(false);
     setShowModal(false);
     setQuestionState(0);

@@ -9,24 +9,6 @@ export default function ModalCMPT({
   setShowModal,
   handleSubmit,
 }) {
-  const submitData = async (data) => {
-    try {
-      const formattedData = data.map(({ statement, text, rangeTxt }) => ({
-        statement,
-        text,
-        rangeTxt,
-      }));
-
-      const response = await axios.post(
-        'http://localhost:5000/fetch-data',
-        formattedData
-      );
-      console.log(response.formattedData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <Modal
       isOpen={showModal}
