@@ -41,7 +41,7 @@ export default function ModalCMPT({
         });
       })}
       <div className='btns'>
-        <button onClick={() => handleSubmit()}>submit</button>
+        <button onClick={() => handleSubmit()}>Submit</button>
         <button onClick={() => setShowModal(false)}>Close</button>
       </div>
     </Modal>
