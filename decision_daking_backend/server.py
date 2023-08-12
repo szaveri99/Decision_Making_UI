@@ -27,29 +27,49 @@ def get_csv():
 
 @app.route('/fetch-data', methods = ['POST'])
 def fetchData():
+    # Existing data in the CSV file (if any)
+    try:
+        existing_df = pd.read_csv('response.csv')
+    except FileNotFoundError:
+        existing_df = pd.DataFrame()
+
     try:
         data = request.get_json()
-        data = pd.DataFrame(data)
-        df = pd.read_csv('politifact_subset_data.csv')  
+        flattened_data = []
+        for item in data:
+            for sub_item in item.get("submittedStmt", []):
+                flattened_item = {
+                    "statement": item["statement"],
+                    "range": item["range"],
+                    "originalTxt": sub_item["stmt"]["originalTxt"],
+                    "modifiedTxt": sub_item["stmt"]["modifiedTxt"],
+                    "originalTxtClassifier": sub_item["classifier"]["originalTxtClassifier"],
+                    "modifiedTxtClassifier": sub_item["classifier"]["modifiedTxtClassifier"],
+                    "rangeVal": sub_item["rangeVal"]
+                }
+                flattened_data.append(flattened_item)
+                
+        # Create a new DataFrame
+        df = pd.DataFrame(flattened_data)
 
-        data.insert(loc = 2,
-                column = 'Original Label',
-                value = df['label'])
-        
-        data.rename(columns={'statement': 'Original Text', 'text': 'Modified Text','rangeTxt':'User Labelled'}, inplace=True)
-        
-        if os.path.exists('response.csv') == False : 
-                with open('response.csv', 'w') as file:
-                    pass            
-                data.to_csv('response.csv', mode='w', index=False)
+        # Append the new data to the existing DataFrame
+        merged_df = pd.concat([existing_df, df], ignore_index=True)
+
+        # Display the merged DataFrame
+        print(merged_df)# Write the merged DataFrame to the CSV file (append mode)
+        # with open('response.csv', 'w') as file:
+        #     file.write('')
+        # merged_df.to_csv('response.csv', index=False, mode='a', header=True)
+       
+        if (os.path.exists('response.csv'))== False:
+            merged_df.to_csv('response.csv', mode='w', index=False)
         else:
-            existing_df = pd.read_csv('response.csv')
-            updated_df = pd.concat([existing_df, data], ignore_index=True)
-            updated_df.to_csv('response.csv', mode='a', index=False, header=False)
-            
-        res = {'text': "uploaded!!"}
+            merged_df.to_csv('response.csv', mode='a', index=False, header=False)  
+
+        print("csv created!!")
+        res = {'text': "csv created!!"}
         return jsonify(res)
-    
+        
     except Exception as e:
         return jsonify(error=str(e)), 500
 
@@ -80,10 +100,10 @@ def fetchDataClassifier():
         class_label = {0: 'False', 1: 'True'}
         predicted_class_label.append(class_label[predicted_class])
         print(predicted_class_label)
+    response_dict = {'originalTxtClassifier':predicted_class_label[0],'modifiedTxtClassifier':predicted_class_label[1]}
+        
     # return predicted_class_label
-    return jsonify(predicted_class_label)
-    
+    return jsonify(response_dict)
 
 if __name__ == '__main__':
     app.run()
-    fetchDataClassifier()
