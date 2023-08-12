@@ -33,8 +33,8 @@ export default function ModalCMPT({
               </h1>
               <div>
                 <h1>Classifier Values</h1>
-                <b>Original: {`${eachStmt.classifier.originalTxtClassifier}`}</b>
-                <b>Original: {`${eachStmt.classifier.modifiedTxtClassifier}`}</b>
+                <b>Original: </b>{`${eachStmt.classifier.originalTxtClassifier}`}
+                <b>Modified: </b>{`${eachStmt.classifier.modifiedTxtClassifier}`}
               </div>
             </div>
           );
