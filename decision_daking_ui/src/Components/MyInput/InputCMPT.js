@@ -83,8 +83,8 @@ function InputCMPT({
     newStmtObj.modifiedTxt = inputState;
 
     const response = {};
-    response.originalTxtClassifier = true;
-    response.modifiedTxtClassifier = false;
+    response.originalTxtClassifier = "true";
+    response.modifiedTxtClassifier = "false";
 
     setStmtList((prevStmts) => [...prevStmts, newStmtObj]);
     setClassifierTxt(response);
@@ -114,7 +114,8 @@ function InputCMPT({
       }
     }
     setIsSubmit(true);
-    newMutate();
+    // newMutate();
+    mutate();
     // newMutate() uncomment this and comment mutate call if want to test
   };
   const handleClear = () => {
@@ -203,7 +204,7 @@ function InputCMPT({
                 <b>{`${data}`}</b>
                 {rangeStatement}.
               </p> */}
-              <p>
+              {/* <p>
                 <b>Original Txt:</b>
                 {recentStmt.originalTxt}{' '}
                 <b>{`${classifierTxt?.originalTxtClassifier}`}</b>
@@ -212,13 +213,21 @@ function InputCMPT({
                 <b>Modified Txt:</b>
                 {recentStmt.modifiedTxt}{' '}
                 <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>
+              </p> */}
+              <p>The <b>{recentStmt.originalTxt}</b> is being classified as <b>{`${classifierTxt?.originalTxtClassifier}`}</b>{' '}
+                 whereas the user preferred statement <b>{recentStmt.modifiedTxt}</b> is being classified as <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>{' '}
+                 The original rating given by the user initially given as{' '}
+                 <b>{userResponse?.rangeTxt}.</b>
               </p>
-              <p>
+              <p><b><i>
+                If you're satisfied with your edits, click "Continue" and then select the "No" option to proceed to the next statement.
+                </i></b></p>
+              {/* <p>
                 Are you satisfied with your work? Do you want to re-write the
                 statement?
-              </p>
-              <button onClick={handleConfirmationYes}>Yes</button>
-              <button onClick={handleConfirmationNo}>No</button>
+              </p> */}
+              <button onClick={handleConfirmationYes}>Continue</button>
+              {/* <button onClick={handleConfirmationNo}>No</button> */}
             </>
           ) : (
             <div className='load'>
@@ -233,11 +242,11 @@ function InputCMPT({
         stmtList.slice(1).map((eachStmt, indexKey) => (
           <div className='stmnt-text' key={indexKey}>
             <p>
-              <b className='stmnt'>Original Text:</b> {eachStmt.originalTxt}.{' '}
+              <b className='stmnt'>Original Text:</b> {eachStmt.originalTxt} {' '}
               <b>{`${classifierTxt?.originalTxtClassifier}`}</b>
             </p>
             <p>
-              <b className='stmnt'>Modified Text:</b> {eachStmt.modifiedTxt}.{' '}
+              <b className='stmnt'>Modified Text:</b> {eachStmt.modifiedTxt} {' '}
               <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>
             </p>
           </div>
