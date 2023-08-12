@@ -48,6 +48,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
 
 
   const handleSubmit = async () => {
+    console.log("printing the csv data")
     console.log(userResponses);
     alert('Your Response Has submitted');
     
