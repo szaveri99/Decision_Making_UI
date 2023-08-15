@@ -2,6 +2,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import csv
 import os
+import boto3
+import s3fs
+from io import BytesIO, StringIO
 import pandas as pd
 from transformers import BertForSequenceClassification, BertTokenizer
 from transformers import AutoTokenizer, AutoModel, AutoConfig, AutoModelForSequenceClassification
@@ -12,28 +15,55 @@ CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 @app.route("/get-csv")
 def get_csv():
+
+    s3 = boto3.client('s3',
+                    region_name = 'us-east-1',
+                    aws_access_key_id = 'AKIAUIGC37Y3TJHUTWFB',
+                    aws_secret_access_key = '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')
+
+    bucket_name = 'sakinaproject01'
+    object_key = 'politifact_dataset.csv'
+    
     try:
-        csv_data = []
+        # Get the CSV file content from S3
+        response = s3.get_object(Bucket=bucket_name, Key=object_key)
+        
+        # Read the content of the CSV as bytes
+        csv_bytes = response['Body'].read()
+
+        # Convert bytes to a Pandas DataFrame
+        df = pd.read_csv(BytesIO(csv_bytes), encoding = 'ISO-8859-1')
         desired_columns = ['text', 'label']
-        with open('politifact_subset_data.csv', 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                selected_data = {column: row[column] for column in desired_columns}
-                csv_data.append(selected_data)
+        csv_data = []
+        for index, row in df.iterrows():
+            selected_data = {column: row[column] for column in desired_columns}
+            csv_data.append(selected_data)
         return jsonify(csv_data)
-       
+        
     except Exception as e: 
         return jsonify(error=str(e)), 500
 
 @app.route('/fetch-data', methods = ['POST'])
 def fetchData():
-    # Existing data in the CSV file (if any)
     try:
-        existing_df = pd.read_csv('response.csv')
-    except FileNotFoundError:
-        existing_df = pd.DataFrame()
+        s3 = boto3.client('s3',
+                    region_name = 'us-east-1',
+                    aws_access_key_id = 'AKIAUIGC37Y3TJHUTWFB',
+                    aws_secret_access_key = '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')
+        bucket_name = 'sakinaproject01'
+        object_key = 'response.csv'
+        try:
+            response = s3.get_object(Bucket=bucket_name, Key=object_key)
+            existing_csv_bytes = response['Body'].read()
+            if existing_csv_bytes:
+                # Convert bytes to a Pandas DataFrame
+                existing_df = pd.read_csv(BytesIO(existing_csv_bytes))
+            else:
+                existing_df = pd.DataFrame()
+                
+        except (FileNotFoundError, KeyError):
+            existing_df = pd.DataFrame()
 
-    try:
         data = request.get_json()
         flattened_data = []
         for item in data:
@@ -48,30 +78,30 @@ def fetchData():
                     "rangeVal": sub_item["rangeVal"]
                 }
                 flattened_data.append(flattened_item)
-                
+
+
         # Create a new DataFrame
         df = pd.DataFrame(flattened_data)
 
         # Append the new data to the existing DataFrame
-        merged_df = pd.concat([existing_df, df], ignore_index=True)
+        updated_df = pd.concat([existing_df, df], ignore_index=True)
 
-        # Display the merged DataFrame
-        print(merged_df)# Write the merged DataFrame to the CSV file (append mode)
-        # with open('response.csv', 'w') as file:
-        #     file.write('')
-        # merged_df.to_csv('response.csv', index=False, mode='a', header=True)
-       
-        if (os.path.exists('response.csv'))== False:
-            merged_df.to_csv('response.csv', mode='w', index=False)
-        else:
-            merged_df.to_csv('response.csv', mode='a', index=False, header=False)  
+        # Convert the updated DataFrame back to CSV format
+        updated_csv_buffer = StringIO()
+        updated_df.to_csv(updated_csv_buffer, index=False)
+        updated_csv_content = updated_csv_buffer.getvalue()
 
-        print("csv created!!")
+        # Upload the updated CSV content to S3, overwriting the existing file
+        s3.put_object(Bucket=bucket_name, Key=object_key, Body=updated_csv_content)
+        print("Data updated in S3 CSV file successfully.")
+        
         res = {'text': "csv created!!"}
         return jsonify(res)
         
+        
     except Exception as e:
         return jsonify(error=str(e)), 500
+
 
 @app.route('/fetch-data-for-classifier', methods = ['POST'])
 def fetchDataClassifier():
