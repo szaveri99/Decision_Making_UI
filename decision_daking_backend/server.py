@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from dotenv import load_dotenv
 import csv
 import os
 import boto3
@@ -13,13 +14,19 @@ import torch
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
+load_dotenv()
+
+access_key = os.getenv("AWS_ACCESS_KEY_ID")
+secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+region = os.getenv("AWS_REGION")
+
 @app.route("/get-csv")
 def get_csv():
 
     s3 = boto3.client('s3',
-                    region_name = 'us-east-1',
-                    aws_access_key_id = 'AKIAUIGC37Y3TJHUTWFB',
-                    aws_secret_access_key = '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')
+                    region_name = region,
+                    aws_access_key_id = access_key,
+                    aws_secret_access_key = secret_key)
 
     bucket_name = 'sakinaproject01'
     object_key = 'politifact_dataset.csv'
@@ -47,9 +54,9 @@ def get_csv():
 def fetchData():
     try:
         s3 = boto3.client('s3',
-                    region_name = 'us-east-1',
-                    aws_access_key_id = 'AKIAUIGC37Y3TJHUTWFB',
-                    aws_secret_access_key = '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')
+                    region_name = region,
+                    aws_access_key_id = access_key,
+                    aws_secret_access_key = secret_key)
         bucket_name = 'sakinaproject01'
         object_key = 'response.csv'
         try:
