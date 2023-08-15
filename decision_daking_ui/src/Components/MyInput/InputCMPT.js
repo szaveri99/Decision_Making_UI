@@ -132,7 +132,7 @@ function InputCMPT({
   const handleConfirmationNo = () => {
     setInputState('');
     setShowConfirmation(false);
-    setIsDisable(true);
+    setIsDisable(false);  // change for the no button to function properly intially it was true turned to false for next button disability
     setShouldHideForm(true);
     handleTick(false);
     setShouldHideClassifier(true);
@@ -148,8 +148,8 @@ function InputCMPT({
         {shouldHideForm === false && (
           <form onSubmit={handleSubmit}>
             <label className='stmnt-inp-text'>
-              First test the classifier accuracy on original statement. Then,
-              rewrite with same meaning to mislead classifier.
+              First test the classifier accuracy on original statement. Then, rewrite the provided statements in such a way 
+              that the semantic meaning is the same as the original one, but you are trying to fool a classifier (i.e., change the classification score from "false" to "true" or vice-versa)
             </label>
             <br />
             <input type='text' value={inputState} onChange={handleChange} />
@@ -214,20 +214,23 @@ function InputCMPT({
                 {recentStmt.modifiedTxt}{' '}
                 <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>
               </p> */}
-              <p>The <b>{recentStmt.originalTxt}</b> is being classified as <b>{`${classifierTxt?.originalTxtClassifier}`}</b>{' '}
-                 whereas the user preferred statement <b>{recentStmt.modifiedTxt}</b> is being classified as <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>{' '}
-                 The original rating given by the user initially given as{' '}
+              <p>The original rating given by the user initially given as{' '}
                  <b>{userResponse?.rangeTxt}.</b>
               </p>
-              <p><b><i>
+              <p>
+              The original classification score for <b>{recentStmt.originalTxt}</b>{' '} 
+              the classifier was <b>{`${classifierTxt?.originalTxtClassifier}`}</b>,{' '}
+              after your writing, the new classification score is <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>.
+              </p>
+              {/* <p><b><i>
                 If you're satisfied with your edits, click "Continue" and then select the "No" option to proceed to the next statement.
-                </i></b></p>
-              {/* <p>
+                </i></b></p> */}
+              <p><b><i>
                 Are you satisfied with your work? Do you want to re-write the
                 statement?
-              </p> */}
-              <button onClick={handleConfirmationYes}>Continue</button>
-              {/* <button onClick={handleConfirmationNo}>No</button> */}
+                </i></b></p>
+              <button onClick={handleConfirmationYes}>Yes</button>
+              <button onClick={handleConfirmationNo}>No</button>
             </>
           ) : (
             <div className='load'>
@@ -243,12 +246,12 @@ function InputCMPT({
           <div className='stmnt-text' key={indexKey}>
             <p>
               <b className='stmnt'>Original Text:</b> {eachStmt.originalTxt} {' '}
-              <b>{`${classifierTxt?.originalTxtClassifier}`}</b>
             </p>
+            <p><b className='stmnt'>Result of Previous Text Classification: </b>{`${classifierTxt?.originalTxtClassifier}`}</p>
             <p>
               <b className='stmnt'>Modified Text:</b> {eachStmt.modifiedTxt} {' '}
-              <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>
             </p>
+            <p><b className='stmnt'>Result of Modified Text Classification: </b>{`${classifierTxt?.modifiedTxtClassifier}`}</p>
           </div>
         ))}
     </>
