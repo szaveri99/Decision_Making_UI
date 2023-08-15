@@ -21,7 +21,7 @@ function App() {
   if (data.length < 2) return;
   return (
     <>
-      <ShowQuestionsCMPT questionDataState={data.slice(0,3)} />
+      <ShowQuestionsCMPT questionDataState={data} />
     </>
   );
 }
