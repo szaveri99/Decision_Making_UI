@@ -148,8 +148,13 @@ function InputCMPT({
         {shouldHideForm === false && (
           <form onSubmit={handleSubmit}>
             <label className='stmnt-inp-text'>
-              First test the classifier accuracy on original statement. Then, rewrite the provided statements in such a way 
+              <p id='white'>
+                The Classifier predicts the statement as <i className='stmnt'> {userResponse.predictor ? 'True' : 'False'} </i>
+              </p>
+              <p>
+              Rewrite the provided statement in such a way 
               that the semantic meaning is the same as the original one, but you are trying to fool a classifier (i.e., change the classification score from "false" to "true" or vice-versa)
+              </p>
             </label>
             <br />
             <input type='text' value={inputState} onChange={handleChange} />
@@ -158,17 +163,18 @@ function InputCMPT({
               buttonName={'Submit'}
               handleBtnClick={handleSubmit}
               shouldDisable={
-                // inputState.trim() === originalTxt || inputState.trim() === ''
-                isSumbit &&
-                isOriginalTextSubmitted &&
-                inputState.trim() === originalTxt
+                inputState.trim() === originalTxt || inputState.trim() === ''
+                // isSumbit &&
+                // isOriginalTextSubmitted &&
+                // inputState.trim() === originalTxt
               }
               myStyle={{
                 backgroundColor:
-                  !(isSumbit && isOriginalTextSubmitted) &&
-                  inputState.trim() === originalTxt
-                    ? '#2ecc71'
-                    : inputState.trim() === originalTxt ||
+                  // !(isSumbit && isOriginalTextSubmitted) &&
+                  // inputState.trim() === originalTxt
+                  //   ? '#2ecc71'
+                    // : 
+                    inputState.trim() === originalTxt ||
                       inputState.trim() === ''
                     ? ''
                     : '#2ecc71',
@@ -214,14 +220,20 @@ function InputCMPT({
                 {recentStmt.modifiedTxt}{' '}
                 <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>
               </p> */}
-              <p>The original rating given by the user initially given as{' '}
-                 <b>{userResponse?.rangeTxt}.</b>
+              <p>You thought this statement is{' '}
+                 <b>{userResponse?.rangeTxt}</b>.
               </p>
               <p>
+                The Machine predicts the statement <b>{recentStmt.originalTxt}</b>{' '} as <b>{`${classifierTxt?.originalTxtClassifier}`}</b>.
+              </p>
+              <p>
+                After your writing, <b>{recentStmt.modifiedTxt}</b> the prediction is <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>.
+              </p>
+              {/* <p>
               The original classification score for <b>{recentStmt.originalTxt}</b>{' '} 
               the classifier was <b>{`${classifierTxt?.originalTxtClassifier}`}</b>,{' '}
               after your writing, the new classification score is <b>{`${classifierTxt?.modifiedTxtClassifier}`}</b>.
-              </p>
+              </p> */}
               {/* <p><b><i>
                 If you're satisfied with your edits, click "Continue" and then select the "No" option to proceed to the next statement.
                 </i></b></p> */}
