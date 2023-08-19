@@ -29,7 +29,7 @@ def get_csv():
                     aws_secret_access_key = secret_key)
 
     bucket_name = 'sakinaproject01'
-    object_key = 'politifact_dataset.csv'
+    object_key = 'politifact_statement_dataset.csv'
     
     try:
         # Get the CSV file content from S3
@@ -40,11 +40,12 @@ def get_csv():
 
         # Convert bytes to a Pandas DataFrame
         df = pd.read_csv(BytesIO(csv_bytes), encoding = 'ISO-8859-1')
-        desired_columns = ['text', 'label']
+        desired_columns = ['text', 'label', 'Predicter']
         csv_data = []
         for index, row in df.iterrows():
             selected_data = {column: row[column] for column in desired_columns}
             csv_data.append(selected_data)
+        print(csv_data)
         return jsonify(csv_data)
         
     except Exception as e: 
@@ -52,7 +53,9 @@ def get_csv():
 
 @app.route('/fetch-data', methods = ['POST'])
 def fetchData():
+    print("I'm inside the function")
     try:
+        print("1st try catch")
         s3 = boto3.client('s3',
                     region_name = region,
                     aws_access_key_id = access_key,
@@ -60,6 +63,7 @@ def fetchData():
         bucket_name = 'sakinaproject01'
         object_key = 'response.csv'
         try:
+            print("2nd try catch")
             response = s3.get_object(Bucket=bucket_name, Key=object_key)
             existing_csv_bytes = response['Body'].read()
             if existing_csv_bytes:
