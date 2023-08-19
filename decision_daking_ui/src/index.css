@@ -192,3 +192,19 @@ input[type="text"]{
 form{
   display: block;
 }
+
+.classifier-text{
+  color: #8BA26C;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.range-classifier{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#white{
+  color: white;
+}
