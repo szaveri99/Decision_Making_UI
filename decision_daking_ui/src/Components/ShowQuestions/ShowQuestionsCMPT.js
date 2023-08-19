@@ -24,6 +24,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
       range: 0,
       rangeTxt: rangeStmt[0],
       text: data.text,
+      predictor: data.Predicter,
       submittedStmt: [],
     }))
   );
@@ -38,10 +39,11 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
     });
   };
 
-  const handleTextChange = (index, newTextValue) => {
+  const handleTextChange = (index, newTextValue, newPredictorValue) => {
     setUserResponses((prevState) => {
       const newResponses = [...prevState];
       newResponses[index].text = newTextValue;
+      newResponses[index].predictor = newPredictorValue;
       return newResponses;
     });
   };
@@ -49,7 +51,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
 
   const handleSubmit = async () => {
     console.log("printing the csv data")
-    console.log(userResponses);
+    console.log("handle submit : ",userResponses);
     alert('Your Response Has submitted');
     
     await axios.post(
@@ -66,6 +68,7 @@ export default function ShowQuestionsCMPT({ questionDataState }) {
         range: 0,
         rangeTxt: rangeStmt[0],
         text: data.text,
+        predictor: data.Predicter,
         submittedStmt:[],
       }))
     );
