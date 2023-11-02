@@ -87,7 +87,3 @@ This project is licensed under the [MIT License](LICENSE).
 ## Acknowledgments
 
 This project was developed to explore human understanding of AI-generated statements. We aim to gain insights into how people perceive AI-generated content and how it interacts with human comprehension.
-
----
-
-You can customize this README further to include specific installation and configuration instructions if needed. Make sure to replace the placeholders with actual details where necessary.
